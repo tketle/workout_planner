@@ -1,0 +1,224 @@
+{
+	"exercises":
+	[
+		{
+			"type": "aerobic",
+			"exercises":
+			[
+				{
+					"name": "placeholder"
+				}
+			]
+		},
+		{
+			"type": "anaerobic",
+			"muscle_groups":
+			[
+				{
+					"name": "Push",
+					"muscle_regions": 
+					[
+						{
+							"name": "Chest",
+							"muscles": ["placeholder"],
+							"exercises": 
+							[
+								{
+									"name": "Chest placeholder 1",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "placeholder"
+								},
+								{
+									"name": "Chest placeholder 2",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "placeholder"
+								},
+								{
+									"name": "Chest placeholder 3",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "placeholder"
+								},
+								{
+									"name": "Chest placeholder 4",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "placeholder"
+								}
+							]
+						},
+						{
+							"name": "Shoulders",
+							"muscles": ["placeholder"],
+							"exercises":
+							[
+								{
+									"name": "Shoulders placeholder 1",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "dumbells"
+								},
+								{
+									"name": "Shoulders placeholder 2",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "dumbells"
+								}
+							]
+						},
+						{
+							"name": "Triceps",
+							"muscles": ["placeholder"],
+							"exercises":
+							[
+								{
+									"name": "Triceps placeholder 1",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "dumbells"
+								},
+								{
+									"name": "Triceps placeholder 2",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "dumbells"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Pull",
+					"muscle_regions":
+					[
+						{
+							"name": "Back",
+							"muscles": ["placeholder"],
+							"exercises":
+							[
+								{
+									"name": "Back placeholder 1",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "placeholder"
+								},
+								{
+									"name": "Back placeholder 2",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "placeholder"
+								}
+							]
+						},
+						{
+							"name": "Biceps",
+							"muscles": ["placeholder"],
+							"exercises":
+							[
+								{
+									"name": "Biceps placeholder 1",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "dumbells"
+								},
+								{
+									"name": "Biceps placeholder 2",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "dumbells"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Core",
+					"muscle_regions":
+					[
+						{
+							"name": "Upper Abs",
+							"muscles": ["placeholder"],
+							"exercises":
+							[
+								{
+									"name": "Upper abs placeholder 1",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "cable"
+								},
+								{
+									"name": "Upper abs placeholder 2",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "cable"
+								}
+							]
+						},
+						{
+							"name": "Mid Abs/Obliques",
+							"muscles": ["placeholder"],
+							"exercises":
+							[
+								{
+									"name": "Mid abs/obliques placeholder 1",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "ball"
+								},
+								{
+									"name": "Mid abs/obliques placeholder 2",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "ball"
+								}
+							]
+						},
+						{
+							"name": "Lower Abs",
+							"muscles": ["placeholder"],
+							"exercises":
+							[
+								{
+									"name": "Lower abs placeholder 1",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "cable"
+								},
+								{
+									"name": "Lower abs placeholder 2",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "cable"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Legs",
+					"muscle_regions":
+					[
+						{
+							"name": "Upper Legs",
+							"muscles": ["placeholder"],
+							"exercises":
+							[
+								{
+									"name": "Upper legs placeholder 1",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "placeholder"
+								},
+								{
+									"name": "Upper legs placeholder 2",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "placeholder"
+								}
+							]
+						},
+						{
+							"name": "Lower Legs",
+							"muscles": ["placeholder"],
+							"exercises":
+							[
+								{
+									"name": "Lower legs placeholder 1",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "placeholder"
+								},
+								{
+									"name": "Lower legs placeholder 2",
+									"targeted_muscles": ["placeholder"],
+									"equipment": "placeholder"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
