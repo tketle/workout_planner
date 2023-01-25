@@ -25,7 +25,7 @@
 							[
 								{
 									"name": "Chest placeholder 1",
-									"targeted_muscles": ["placeholder"],
+									"targeted_muscles": ["placeholder", "placeholder2"],
 									"equipment": "placeholder"
 								},
 								{

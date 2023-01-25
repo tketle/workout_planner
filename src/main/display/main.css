@@ -1,0 +1,59 @@
+table {
+    table-layout: fixed;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+th {
+    text-align: center;
+}
+
+#container_table {
+    width: 50%;
+    border: 1px solid;
+}
+
+.info {
+    width: 100%;
+}
+
+.muscle-group {
+    margin-bottom: 20px;
+    width: 95%;
+    border: 1px solid;
+}
+
+.muscle-group > tr > th {
+    background-color: #04AA6D;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    cursor: pointer;
+    color: #FFFFFF;
+    font-size: 25px;
+    -webkit-text-stroke: 0.75px #000000;
+    font-weight: 900;
+}
+
+.muscle-region > th {
+    background-color: #2596be;
+    padding: 2px;
+    color: #FFFFFF;
+    font-weight: 900;
+    font-size: 20px;
+    -webkit-text-stroke: 0.75px #000000;
+}
+
+.exercises td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.exercises tr:nth-child(even) {
+    background-color: #D0D0D0;
+}
+
+.exercises tr:nth-child(odd) {
+    background-color: #EFEFEF;
+}
