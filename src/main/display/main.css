@@ -3,7 +3,12 @@ table {
     margin-left: auto;
     margin-right: auto;
     border-collapse: collapse;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: sans-serif;
+    background-color: #fff8de;
+}
+
+th, tr, td {
+    border-collapse: collapse;
 }
 
 th {
@@ -13,41 +18,74 @@ th {
 #container_table {
     width: 50%;
     border: 1px solid;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+#container_table > thead:first-child > tr:first-child > th:first-child {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #bca5c4;
+    font-size: 30px;
+}
+
+#container_table > tbody th {
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+#push_table {
+    margin-top: 20px;
 }
 
 .info {
     width: 100%;
 }
 
+.hideTr {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+}
+
+.muscle-region > td {
+    border: 5px solid black;
+}
+
 .muscle-group {
     margin-bottom: 20px;
     width: 95%;
-    border: 1px solid;
+    border: 1px solid black;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
-.muscle-group > tr > th {
+.muscle-group > thead > tr > th {
     background-color: #04AA6D;
     padding-top: 7px;
     padding-bottom: 7px;
     cursor: pointer;
     color: #FFFFFF;
     font-size: 25px;
-    -webkit-text-stroke: 0.75px #000000;
-    font-weight: 900;
+    font-weight: 750;
 }
 
-.muscle-region > th {
+.muscle-group > tbody > tr > td {
+    background-color: #a6baba;
+}
+
+.muscle-region > thead > tr > th {
     background-color: #2596be;
     padding: 2px;
     color: #FFFFFF;
-    font-weight: 900;
+    font-weight: 700;
     font-size: 20px;
-    -webkit-text-stroke: 0.75px #000000;
 }
 
 .exercises td {
     padding-top: 5px;
     padding-bottom: 5px;
+    padding-left: 5px;
+    border: 1px solid black;
 }
 
 .exercises tr:nth-child(even) {

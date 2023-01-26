@@ -2,13 +2,13 @@ var exercises;
 
 $.getJSON("../resources/exercises.json", function(json) {
     exercises = json;
-    render_container_table("#container_table");
+    render_container_table();
 });
 
 $(document).ready(function() {
     $(".hideTr").hide();
     $("[data-toggle='toggle']").click(function() {
-        var table_body = $(this).parents().next(".hideTr");
+        var table_body = $(this).parentsUntil("td", "table").find(".hideTr");
         if (table_body.is(":visible")) {
             table_body.slideUp("fast");
         } else {
@@ -16,43 +16,27 @@ $(document).ready(function() {
         }
     });
 
-    $("#push_table").children(".hideTr").show();
+    $("#push_table").find(".hideTr").show();
 });
 
-function render_container_table(selector) {
-    $(selector).append("<th>Anaerobic Exercises</th>");
-    exercises["exercises"][1]["muscle_groups"].forEach(function(muscle_group) {
-        var $row = $("<tr/>");
-        $row.append(construct_muscle_group_table(muscle_group));
-        $(selector).append($row);
-    });
+function render_container_table() {
+    var muscle_groups_list = exercises["exercises"][1]["muscle_groups"];
+    render_muscle_group_table("#push_table", muscle_groups_list[0]);
+    render_muscle_group_table("#pull_table", muscle_groups_list[1]);
+    render_muscle_group_table("#core_table", muscle_groups_list[2]);
+    render_muscle_group_table("#legs_table", muscle_groups_list[3]);
 }
 
-function construct_muscle_group_table(muscle_group) {
-    var muscle_group_name = muscle_group["name"];
-
-    var $muscle_group_table = $("<table/>", {
-        id: remove_whitespace_and_special_characters(muscle_group_name) + "_table",
-        class: "info muscle-group"
-    });
-
-    var $header_row = $("<tr/>");
-
-    $header_row.append("<th data-toggle='toggle'>" + muscle_group_name + "</th>");
-    $muscle_group_table.append($header_row);
-
-    var $table_body = $("<div/>");
-    $table_body.addClass("hideTr");
+function render_muscle_group_table(selector, muscle_group) {
+    var $table_body = $(selector).find("div");
 
     muscle_group["muscle_regions"].forEach(function(muscle_region) {
         var $row = $("<tr/>");
-        $row.append(construct_muscle_region_table(muscle_region));
+        var $data = $("<td/>");
+        $data.append(construct_muscle_region_table(muscle_region));
+        $row.append($data);
         $table_body.append($row);
     });
-
-    $muscle_group_table.append($table_body);
-
-    return $muscle_group_table;
 }
 
 function construct_muscle_region_table(muscle_region) {
@@ -63,13 +47,25 @@ function construct_muscle_region_table(muscle_region) {
         class: "info muscle-region"
     });
 
-    $muscle_region_table.append("<th>" + muscle_region_name + "</th>");
+    var $header = $("<thead/>", {
+        "html": $("<tr/>", {
+            "html": $("<th/>").html(muscle_region_name)
+        })
+    });
 
-    var $row = $("<tr/>");
-    $row.append(construct_exercises_table(
-        remove_whitespace_and_special_characters(muscle_region_name), muscle_region["exercises"]));
+    $muscle_region_table.append($header);
 
-    $muscle_region_table.append($row);
+    var $table_body = $("<tbody/>", {
+        "html": $("<tr/>", {
+            "html": $("<td/>", {
+                "html": construct_exercises_table(
+                    remove_whitespace_and_special_characters(muscle_region_name),
+                        muscle_region["exercises"])
+            })
+        })
+    });
+
+    $muscle_region_table.append($table_body);
 
     return $muscle_region_table;
 }
