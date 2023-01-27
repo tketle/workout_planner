@@ -8,11 +8,17 @@ $.getJSON("../resources/exercises.json", function(json) {
 $(document).ready(function() {
     $(".hideTr").hide();
     $("[data-toggle='toggle']").click(function() {
-        var table_body = $(this).parentsUntil("td", "table").find(".hideTr");
-        if (table_body.is(":visible")) {
-            table_body.slideUp("fast");
+        var $table_body = $(this).parentsUntil("td", "table").find(".hideTr");
+        var $caret_icon = $(this).parentsUntil("td", "table").find("i").first();
+
+        if ($table_body.is(":visible")) {
+            $table_body.slideUp("fast");
+            $caret_icon.removeClass("fa-caret-down");
+            $caret_icon.addClass("fa-caret-right");
         } else {
-            table_body.slideDown("fast");
+            $table_body.slideDown("fast");
+            $caret_icon.removeClass("fa-caret-up");
+            $caret_icon.addClass("fa-caret-down");
         }
     });
 
@@ -28,7 +34,7 @@ function render_container_table() {
 }
 
 function render_muscle_group_table(selector, muscle_group) {
-    var $table_body = $(selector).find("div");
+    var $table_body = $(selector).find("div.hideTr");
 
     muscle_group["muscle_regions"].forEach(function(muscle_region) {
         var $row = $("<tr/>");
@@ -43,7 +49,7 @@ function construct_muscle_region_table(muscle_region) {
     var muscle_region_name = muscle_region["name"];
 
     var $muscle_region_table = $("<table/>", {
-        id: remove_whitespace_and_special_characters(muscle_region_name) + "_table",
+        id: replace_whitespace_and_special_characters(muscle_region_name) + "_table",
         class: "info muscle-region"
     });
 
@@ -59,7 +65,7 @@ function construct_muscle_region_table(muscle_region) {
         "html": $("<tr/>", {
             "html": $("<td/>", {
                 "html": construct_exercises_table(
-                    remove_whitespace_and_special_characters(muscle_region_name),
+                    replace_whitespace_and_special_characters(muscle_region_name),
                         muscle_region["exercises"])
             })
         })
@@ -87,6 +93,6 @@ function construct_exercises_table(muscle_region_name, exercise_list) {
     return $exercise_table;
 }
 
-function remove_whitespace_and_special_characters(table_name) {
+function replace_whitespace_and_special_characters(table_name) {
     return table_name.toLowerCase().replace(/[^a-zA-Z0-9]/g, "_");
 }

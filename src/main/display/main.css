@@ -1,3 +1,26 @@
+.flex-container {
+    display: flex;
+    align-items: stretch;
+}
+
+.flex-container .flex-container-start {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.flex-container .flex-container-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.flex-container .flex-container-end {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
 table {
     table-layout: fixed;
     margin-left: auto;
@@ -47,8 +70,8 @@ th {
     margin-bottom: 30px;
 }
 
-.muscle-region > td {
-    border: 5px solid black;
+.muscle-region td {
+    border: 1px solid black;
 }
 
 .muscle-group {
@@ -85,7 +108,7 @@ th {
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 5px;
-    border: 1px solid black;
+    border: 1px solid grey;
 }
 
 .exercises tr:nth-child(even) {
@@ -94,4 +117,8 @@ th {
 
 .exercises tr:nth-child(odd) {
     background-color: #EFEFEF;
+}
+
+.vertical-center {
+  vertical-align: middle;
 }
