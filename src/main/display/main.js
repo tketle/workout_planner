@@ -1,47 +1,28 @@
 var exercises;
 
-$.getJSON("../resources/exercises.json", function(json) {
-    exercises = json;
-    render_container_table();
-});
-
 $(document).ready(function() {
-    $(".hideTr").hide();
-    $("[data-toggle='toggle']").click(function() {
-        var $table_body = $(this).parentsUntil("td", "table").find(".hideTr");
-        var $caret_icon = $(this).parentsUntil("td", "table").find("i").first();
-
-        if ($table_body.is(":visible")) {
-            $table_body.slideUp("fast");
-            $caret_icon.removeClass("fa-caret-down");
-            $caret_icon.addClass("fa-caret-right");
-        } else {
-            $table_body.slideDown("fast");
-            $caret_icon.removeClass("fa-caret-up");
-            $caret_icon.addClass("fa-caret-down");
-        }
+    $.getJSON("../resources/exercises.json", function(json) {
+        exercises = json;
+        render_container_table();
     });
-
-    $("#push_table").find(".hideTr").show();
 });
 
 function render_container_table() {
     var muscle_groups_list = exercises["exercises"][1]["muscle_groups"];
-    render_muscle_group_table("#push_table", muscle_groups_list[0]);
-    render_muscle_group_table("#pull_table", muscle_groups_list[1]);
-    render_muscle_group_table("#core_table", muscle_groups_list[2]);
-    render_muscle_group_table("#legs_table", muscle_groups_list[3]);
+    render_muscle_group_content("#push_container", muscle_groups_list[0]);
+    render_muscle_group_content("#pull_container", muscle_groups_list[1]);
+    render_muscle_group_content("#core_container", muscle_groups_list[2]);
+    render_muscle_group_content("#legs_container", muscle_groups_list[3]);
+    init_tooltips();
 }
 
-function render_muscle_group_table(selector, muscle_group) {
-    var $table_body = $(selector).find("div.hideTr");
+function render_muscle_group_content(selector, muscle_group) {
+    var $accordion_body = $(selector).find(".accordion-body");
 
     muscle_group["muscle_regions"].forEach(function(muscle_region) {
-        var $row = $("<tr/>");
-        var $data = $("<td/>");
-        $data.append(construct_muscle_region_table(muscle_region));
-        $row.append($data);
-        $table_body.append($row);
+        var $list_item = $("<i/>");
+        $list_item.append(construct_muscle_region_table(muscle_region));
+        $accordion_body.append($list_item);
     });
 }
 
@@ -50,12 +31,13 @@ function construct_muscle_region_table(muscle_region) {
 
     var $muscle_region_table = $("<table/>", {
         id: replace_whitespace_and_special_characters(muscle_region_name) + "_table",
-        class: "info muscle-region"
+        class: "table table-light"
     });
 
     var $header = $("<thead/>", {
         "html": $("<tr/>", {
-            "html": $("<th/>").html(muscle_region_name)
+            "html": $("<th/>").html(muscle_region_name),
+            class: "table-success"
         })
     });
 
@@ -68,7 +50,9 @@ function construct_muscle_region_table(muscle_region) {
                     replace_whitespace_and_special_characters(muscle_region_name),
                         muscle_region["exercises"])
             })
-        })
+        }),
+        class: "table-group-divider",
+        style: "border-top-color: #999999"
     });
 
     $muscle_region_table.append($table_body);
@@ -79,20 +63,54 @@ function construct_muscle_region_table(muscle_region) {
 function construct_exercises_table(muscle_region_name, exercise_list) {
     var $exercise_table = $("<table/>", {
         id: muscle_region_name + "_exercises_table",
-        class: "info exercises"
+        class: "table table-striped",
+        style: "border-color: #999999"
     });
+
+    $exercise_table.append(create_exercise_col_group());
+
+    var $table_body = $("<tbody/>");
 
     exercise_list.forEach(function(exercise) {
         var $row = $("<tr/>");
         $row.append("<td>" + exercise.name + "</td>");
         $row.append("<td>" + exercise.targeted_muscles.join(", ") + "</td>");
         $row.append("<td>" + exercise.equipment + "</td>");
-        $exercise_table.append($row);
+        $row.append($("<td/>", {html: create_edit_icon()}));
+        $row.append($("<td/>", {html: create_trash_icon()}));
+        $table_body.append($row);
     });
+
+    $exercise_table.append($table_body);
 
     return $exercise_table;
 }
 
+function create_exercise_col_group() {
+    var $col_group = $("<colgroup/>");
+    $col_group.append($("<col/>", {class: "col-md-4"}));
+    $col_group.append($("<col/>", {class: "col-md-4"}));
+    $col_group.append($("<col/>", {class: "col-md-4"}));
+    $col_group.append($("<col/>", {class: "col-md-4"}));
+    $col_group.append($("<col/>", {class: "col-md-4"}));
+
+    return $col_group;
+}
+
+function create_edit_icon() {
+    return create_icon("fa-pen");
+}
+
+function create_trash_icon() {
+    return create_icon("fa-trash");
+}
+
+function create_icon(icon) {
+    return $("<i/>", {
+                class: "fa-solid fa-sm icon " + icon
+            });
+}
+
 function replace_whitespace_and_special_characters(table_name) {
-    return table_name.toLowerCase().replace(/[^a-zA-Z0-9]/g, "_");
+    return table_name.toLowerCase().replace(/[^a-z0-9]/g, "_");
 }

@@ -5,153 +5,69 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="main.js"></script>
         <script src="https://kit.fontawesome.com/a26ddb850b.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
         <link rel="stylesheet" href="main.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" crossorigin="anonymous">
     </head>
     <body>
-        <table id="container_table" style="border: 1px solid black;">
-            <thead>
-                <tr>
-                    <th>Anaerobic Exercises</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <table id="push_table" class="info muscle-group">
-                            <thead>
-                                <tr>
-                                    <th data-toggle="toggle">
-                                        <div class="flex-container">
-                                            <div class="flex-container-start">
-                                                <span style="margin-left: 5%; color: green;">
-                                                    <i class="fa-solid fa-caret-down fa-sm"></i>
-                                                </span>
-                                            </div>
-                                            <div class="flex-container-center">
-                                                Push
-                                            </div>
-                                            <div class="flex-container-end">
-                                                <span style="margin-right: 12%; color: green;">
-                                                    <i class="fa-solid fa-pen fa-2xs"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="hideTr"></div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <table id="pull_table" class="info muscle-group">
-                            <thead>
-                                <tr>
-                                    <th data-toggle="toggle">
-                                        <div class="flex-container">
-                                            <div class="flex-container-start">
-                                                <span style="margin-left: 5%; color: green;">
-                                                    <i class="fa-solid fa-caret-right fa-sm"></i>
-                                                </span>
-                                            </div>
-                                            <div class="flex-container-center">
-                                                Pull
-                                            </div>
-                                            <div class="flex-container-end">
-                                                <span style="margin-right: 12%; color: green;">
-                                                    <i class="fa-solid fa-pen fa-2xs"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="hideTr"></div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <table id="core_table" class="info muscle-group">
-                            <thead>
-                                <tr>
-                                    <th data-toggle="toggle">
-                                        <div class="flex-container">
-                                            <div class="flex-container-start">
-                                                <span style="margin-left: 5%; color: green;">
-                                                    <i class="fa-solid fa-caret-right fa-sm"></i>
-                                                </span>
-                                            </div>
-                                            <div class="flex-container-center">
-                                                Core
-                                            </div>
-                                            <div class="flex-container-end">
-                                                <span style="margin-right: 12%; color: green;">
-                                                    <i class="fa-solid fa-pen fa-2xs"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="hideTr"></div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <table id="legs_table" class="info muscle-group">
-                            <thead>
-                                <tr>
-                                    <th data-toggle="toggle">
-                                        <div class="flex-container">
-                                            <div class="flex-container-start">
-                                                <span style="margin-left: 5%; color: green;">
-                                                    <i class="fa-solid fa-caret-right fa-sm"></i>
-                                                </span>
-                                            </div>
-                                            <div class="flex-container-center">
-                                                Legs
-                                            </div>
-                                            <div class="flex-container-end">
-                                                <span style="margin-right: 12%; color: green;">
-                                                    <i class="fa-solid fa-pen fa-2xs"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="hideTr"></div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div style="width: 50%; margin-left: auto; margin-right: auto;">
+            <table id="container_table" class="table">
+                <thead>
+                    <tr>
+                        <th>Anaerobic Exercises</th>
+                    </tr>
+                </thead>
+                <tbody id="muscle_group_accordion" class="accordion">
+                    <tr class="accordion-item">
+                        <td>
+                            <div id="push_heading" class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#push_container" aria-expanded="true" aria-controls="push_container">
+                                    <strong>Push</strong>
+                                </button>
+                            </div>
+                            <div id="push_container" class="accordion-collapse collapse show" aria-labelledby="push_heading" data-bs-parent="#muscle_group_accordion">
+                                <div class="accordion-body"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="accordion-item">
+                        <td>
+                            <div id="pull_heading" class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#pull_container" aria-expanded="false" aria-controls="pull_container">
+                                    <strong>Pull</strong>
+                                </button>
+                            </div>
+                            <div id="pull_container" class="accordion-collapse collapse" aria-labelledby="pull_heading">
+                                <div class="accordion-body"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="accordion-item">
+                        <td>
+                            <div id="core_heading" class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#core_container" aria-expanded="false" aria-controls="core_container">
+                                    <strong>Core</strong>
+                                </button>
+                            </div>
+                            <div id="core_container" class="accordion-collapse collapse" aria-labelledby="core_heading">
+                                <div class="accordion-body"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="accordion-item">
+                        <td>
+                            <div id="legs_heading" class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#legs_container" aria-expanded="false" aria-controls="legs_container">
+                                    <strong>Legs</strong>
+                                </button>
+                            </div>
+                            <div id="legs_container" class="accordion-collapse collapse" aria-labelledby="legs_heading">
+                                <div class="accordion-body"></div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </body>
 </html>
