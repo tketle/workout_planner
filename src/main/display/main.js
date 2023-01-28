@@ -63,7 +63,7 @@ function construct_muscle_region_header(muscle_region_name) {
     }));
 
     $header_row.append($("<th/>", {
-        html: create_fa_icon("square-plus", "fa-xl"),
+        html: create_fa_icon("square-plus", "fa-xl").css("color", "#809971"),
         scope: "col",
         colspan: 4,
         class: "text-end",
