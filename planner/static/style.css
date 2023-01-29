@@ -2,6 +2,10 @@ html {
   overflow-y: scroll;
 }
 
+body {
+    padding-right: 0px !important;
+}
+
 .icon {
     cursor: pointer;
     color: #808080;

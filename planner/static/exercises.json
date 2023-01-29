@@ -53,12 +53,12 @@
 								{
 									"name": "Shoulders placeholder 1",
 									"targeted_muscles": ["placeholder"],
-									"equipment": "dumbells"
+									"equipment": "dumbbells"
 								},
 								{
 									"name": "Shoulders placeholder 2",
 									"targeted_muscles": ["placeholder"],
-									"equipment": "dumbells"
+									"equipment": "dumbbells"
 								}
 							]
 						},
@@ -70,12 +70,12 @@
 								{
 									"name": "Triceps placeholder 1",
 									"targeted_muscles": ["placeholder"],
-									"equipment": "dumbells"
+									"equipment": "dumbbells"
 								},
 								{
 									"name": "Triceps placeholder 2",
 									"targeted_muscles": ["placeholder"],
-									"equipment": "dumbells"
+									"equipment": "dumbbells"
 								}
 							]
 						}
@@ -110,12 +110,12 @@
 								{
 									"name": "Biceps placeholder 1",
 									"targeted_muscles": ["placeholder"],
-									"equipment": "dumbells"
+									"equipment": "dumbbells"
 								},
 								{
 									"name": "Biceps placeholder 2",
 									"targeted_muscles": ["placeholder"],
-									"equipment": "dumbells"
+									"equipment": "dumbbells"
 								}
 							]
 						}

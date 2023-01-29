@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Exercises{% endblock %}
+{% block head %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='exercises.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div style="width: 50%; margin-left: auto; margin-right: auto;">
+    <table id="container_table" class="table table-light">
+        <thead>
+            <tr>
+                <th>Anaerobic Exercises</th>
+            </tr>
+        </thead>
+        <tbody id="muscle_group_accordion" class="accordion">
+            {% for muscle_group in exercises['exercises'][1]['muscle_groups'] %}
+                {% set muscle_group_name = muscle_group['name'] %}
+                {% set heading_id = muscle_group_name.lower() + '_heading' %}
+                {% set container_id = muscle_group_name.lower() + '_container' %}
+                <tr class="accordion-item">
+                    <td>
+                        <div id="{{ heading_id }}">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#{{ container_id }}" aria-expanded="true" aria-controls="{{ container_id }}">
+                                <strong>{{ muscle_group_name }}</strong>
+                            </button>
+                        </div>
+                        <div id="{{ container_id }}" class="accordion-collapse collapse {% if muscle_group_name == 'Push' %}show{% endif %}" aria-labelledby="{{ heading_id }}">
+                            <div class="accordion-body">
+                                {% for muscle_region in muscle_group['muscle_regions'] %}
+                                    {% set muscle_region_name = muscle_region['name'] %}
+                                    {% set muscle_region_table_id = treat_text(muscle_region_name.lower()) + '_table' %}
+                                    <i>
+                                        <table id="{{ muscle_region_table_id }}" class="table table-light table-striped">
+                                            <thead>
+                                                <tr class="table-success">
+                                                    <th scope="col">{{ muscle_region_name }}</th>
+                                                    <th scope="col" colspan="4" class="text-end" style="padding-right: 15px">
+                                                        <i class="fa-solid fa-square-plus fa-xl icon" style="color: #809971;"></i>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <colgroup>
+                                                    <col style="width: 31%;">
+                                                    <col style="width: 31%;">
+                                                    <col style="width: 31%;">
+                                                    <col style="width: 3.5%;">
+                                                    <col style="width: 3.5%;">
+                                            </colgroup>
+                                            <tbody class="table-group-divider" style="border-top-color: #999999;">
+                                                {% for exercise in muscle_region['exercises'] %}
+                                                    <tr>
+                                                        <td>{{ exercise['name'] }}</td>
+                                                        <td>{{ exercise['targeted_muscles']|join(', ') }}</td>
+                                                        <td>{{ exercise['equipment'] }}</td>
+                                                        <td class="text-center"><i class="fa-solid fa-pen fa-xs icon"></i></td>
+                                                        <td class="text-center"><i class="fa-solid fa-trash fa-xs icon" data-bs-toggle="modal" data-bs-target="#delete_modal" onclick="on_delete_clicked($(this));"></i></td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </i>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modals -->
+    {% include 'exercises/delete_modal.html' %}
+</div>
+{% endblock %}

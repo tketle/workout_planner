@@ -2,7 +2,8 @@ from model.muscle import MuscleRegion, MuscleGroup
 from model.exercise import AerobicExercise, AnaerobicExercise, Circuit
 from model.workout import WorkoutType, Workout
 from random import sample
-import json
+from json import load
+
 
 _muscle_groups = {}
 _muscle_regions = {}
@@ -11,33 +12,32 @@ _workouts = []
 
 
 def parse_exercises(exercises, muscle_groups, muscle_regions):
-    f = open('../resources/exercises.json')
-    data = json.load(f)
-    f.close()
+    with open('planner/static/exercises.json') as f:
+        data = load(f)
 
-    aerobic_exercises = {}
-    anaerobic_exercises = {}
+        aerobic_exercises = {}
+        anaerobic_exercises = {}
 
-    for aerobic_exercise in data["exercises"][0]["exercises"]:
-        aerobic_exercises[aerobic_exercise["name"]] = AerobicExercise(aerobic_exercise["name"])
+        for aerobic_exercise in data["exercises"][0]["exercises"]:
+            aerobic_exercises[aerobic_exercise["name"]] = AerobicExercise(aerobic_exercise["name"])
 
-    for muscle_group in data["exercises"][1]["muscle_groups"]:
-        muscle_groups[muscle_group["name"]] = MuscleGroup(muscle_group["name"])
+        for muscle_group in data["exercises"][1]["muscle_groups"]:
+            muscle_groups[muscle_group["name"]] = MuscleGroup(muscle_group["name"])
 
-        for muscle_region in muscle_group["muscle_regions"]:
-            muscle_regions[muscle_region["name"]] = MuscleRegion(muscle_region["name"], muscle_region["muscles"])
-            muscle_groups[muscle_group["name"]].add_muscle_region(muscle_regions[muscle_region["name"]])
+            for muscle_region in muscle_group["muscle_regions"]:
+                muscle_regions[muscle_region["name"]] = MuscleRegion(muscle_region["name"], muscle_region["muscles"])
+                muscle_groups[muscle_group["name"]].add_muscle_region(muscle_regions[muscle_region["name"]])
 
-            for exercise in muscle_region["exercises"]:
-                anaerobic_exercises[exercise["name"]] = \
-                    AnaerobicExercise(
-                        exercise["name"],
-                        muscle_groups[muscle_group["name"]],
-                        muscle_regions[muscle_region["name"]],
-                        exercise["targeted_muscles"], exercise["equipment"])
+                for exercise in muscle_region["exercises"]:
+                    anaerobic_exercises[exercise["name"]] = \
+                        AnaerobicExercise(
+                            exercise["name"],
+                            muscle_groups[muscle_group["name"]],
+                            muscle_regions[muscle_region["name"]],
+                            exercise["targeted_muscles"], exercise["equipment"])
 
-    exercises["aerobic"] = aerobic_exercises
-    exercises["anaerobic"] = anaerobic_exercises
+        exercises["aerobic"] = aerobic_exercises
+        exercises["anaerobic"] = anaerobic_exercises
 
 
 def get_exercises_targeting_muscle_group(muscle_group, exercises):
