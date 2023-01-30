@@ -1,5 +1,8 @@
+var exercises;
+
 $(document).ready(function() {
-    register_delete_modal_observer();
+    exercises = eval($("#exercise_data").data("exercises"));
+    init_show_delete_modal_handler("#delete_modal");
     init_fa_icon_hover_behavior(".fa-square-plus", "fa-xl", "fa-2xl");
     init_fa_icon_hover_behavior(".fa-pen", "fa-xs", "fa-sm");
     init_fa_icon_hover_behavior(".fa-trash", "fa-xs", "fa-sm");
@@ -14,26 +17,48 @@ function init_fa_icon_hover_behavior(selector, normal_size, hover_size) {
     });
 }
 
-function on_delete_clicked(node) {
-    var exercise_name = node.parentsUntil("tbody").find("td").first();
-    $("#delete_modal").find("i").html(exercise_name.html());
+function on_delete_icon_clicked(node) {
+    var row_data = node.parentsUntil("tbody", "tr").children();
+    $("#delete_modal").find(".modal-content").data("exercise", {
+        id: $(row_data[0]).html(),
+        name: $(row_data[1]).html()
+    });
+
+    $("#delete_modal").modal("show");
 }
 
-function register_delete_modal_observer() {
-    const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-            const el = mutation.target;
-            if ((mutation.oldValue && mutation.oldValue.match(/\bshow\b/))
-                && mutation.target.classList
-                && !mutation.target.classList.contains("show")) {
-                    $("#delete_modal").find("i").html("");
-            }
-        })
+function on_delete_clicked(exercise_id) {
+    $.ajax({
+        url: "exercises/anaerobic/" + exercise_id,
+        type: "DELETE",
+        success: function(result) {
+            var muscle_groups = exercises['exercises'][1]['muscle_groups'];
+            var muscle_regions = muscle_groups[result['group_idx']]['muscle_regions']
+            muscle_regions[result['region_idx']]['exercises'] = result['exercises'];
+            var table_id = "#" + treat_text(muscle_regions[result["region_idx"]]["name"]) + "_table";
+
+            $(table_id).load(document.URL + " " + table_id);
+        }
+    })
+}
+
+function get_delete_data() {
+    return $("#delete_modal").find(".modal-content").data("exercise");
+}
+
+function init_show_delete_modal_handler(selector) {
+    $(selector).on("show.bs.modal", function(event) {
+        var $content = $(selector).find(".modal-content");
+        $content.find("i").html($content.data("exercise").name);
     });
 
-    observer.observe(document.querySelector("#delete_modal"), {
-        attributes: true,
-        attributeOldValue: true,
-        attributeFilter: ["class"]
+    $(selector).on("hidden.bs.modal", function(event) {
+        var $content = $("#delete_modal").find(".modal-content");
+        $content.data("exercise", "");
+        $content.find("i").html("");
     });
+}
+
+function treat_text(text) {
+    return text.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
 }

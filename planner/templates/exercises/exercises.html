@@ -7,7 +7,8 @@
 {% endblock %}
 
 {% block content %}
-<div style="width: 50%; margin-left: auto; margin-right: auto;">
+<meta id="exercise_data" data-exercises='{{ exercises|tojson }}'>
+<div style="width: 75%; margin-left: auto; margin-right: auto;">
     <table id="container_table" class="table table-light">
         <thead>
             <tr>
@@ -42,20 +43,22 @@
                                                 </tr>
                                             </thead>
                                             <colgroup>
-                                                    <col style="width: 31%;">
-                                                    <col style="width: 31%;">
-                                                    <col style="width: 31%;">
-                                                    <col style="width: 3.5%;">
-                                                    <col style="width: 3.5%;">
+                                                    <col title="ID" style="display: none; width: 0%;">
+                                                    <col title="Name" style="width: 31%;">
+                                                    <col title="Muscles" style="width: 31%;">
+                                                    <col title="Equipment" style="width: 31%;">
+                                                    <col title="Edit" style="width: 3.5%;">
+                                                    <col title="Delete" style="width: 3.5%;">
                                             </colgroup>
                                             <tbody class="table-group-divider" style="border-top-color: #999999;">
                                                 {% for exercise in muscle_region['exercises'] %}
                                                     <tr>
+                                                        <td style="display: none;">{{ exercise['id'] }}</td>
                                                         <td>{{ exercise['name'] }}</td>
                                                         <td>{{ exercise['targeted_muscles']|join(', ') }}</td>
                                                         <td>{{ exercise['equipment'] }}</td>
                                                         <td class="text-center"><i class="fa-solid fa-pen fa-xs icon"></i></td>
-                                                        <td class="text-center"><i class="fa-solid fa-trash fa-xs icon" data-bs-toggle="modal" data-bs-target="#delete_modal" onclick="on_delete_clicked($(this));"></i></td>
+                                                        <td class="text-center"><i class="fa-solid fa-trash fa-xs icon" onclick="on_delete_icon_clicked($(this));"></i></td>
                                                     </tr>
                                                 {% endfor %}
                                             </tbody>
