@@ -1,25 +1,7 @@
-sketch.txt
-
-.idea
-
-*.pyc
-__pycache__/
-
-venv/
-
-instance/
-
-.pytest_cache/
-.coverage
-htmlcov/
-
-dist/
-build/
-*.egg-info/
-
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # Compiled output
+/dist
 /tmp
 /out-tsc
 /bazel-out
@@ -30,6 +12,7 @@ npm-debug.log
 yarn-error.log
 
 # IDEs and editors
+.idea/
 .project
 .classpath
 .c9/

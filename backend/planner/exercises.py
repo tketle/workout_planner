@@ -36,7 +36,7 @@ def delete_anaerobic_exercise(exercise_id):
     muscle_group, muscle_region, exercise = find_anaerobic_exercise(exercise_id)
     muscle_region[1]['exercises'].remove(exercise)
 
-    update_exercises_file()
+    #update_exercises_file()
 
     return {
         'group_idx': muscle_group[0],

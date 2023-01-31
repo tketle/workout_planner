@@ -10,3 +10,11 @@ body {
     cursor: pointer;
     color: #808080;
 }
+
+.op-alert {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 3%;
+    transform: translateX(-50%);
+}

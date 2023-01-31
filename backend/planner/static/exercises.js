@@ -38,6 +38,7 @@ function on_delete_clicked(exercise_id) {
             var table_id = "#" + treat_text(muscle_regions[result["region_idx"]]["name"]) + "_table";
 
             $(table_id).load(document.URL + " " + table_id);
+            show_delete_success_alert();
         }
     })
 }
@@ -57,6 +58,15 @@ function init_show_delete_modal_handler(selector) {
         $content.data("exercise", "");
         $content.find("i").html("");
     });
+}
+
+function show_delete_success_alert() {
+    var $alert = $("#delete_success_alert");
+    $alert.show();
+    $alert.fadeTo(2000, 50)
+        .slideUp(500, function() {
+            $alert.slideUp(500);
+        });
 }
 
 function treat_text(text) {
