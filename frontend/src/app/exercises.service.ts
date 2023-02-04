@@ -28,7 +28,6 @@ export class ExercisesService {
   }
 
   private parseExercisesResponse(response: any) {
-    console.log(response);
     return {
       aerobic_exercises: response.exercises[0],
       anaerobic_exercises: response.exercises[1]

@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { Exercises } from "../model/exercises";
 import { ExercisesService } from "../exercises.service";
 import { MessageService } from "../message.service";
+import {MatAccordion} from "@angular/material/expansion";
 
 @Component({
   selector: 'app-exercises',
@@ -11,6 +12,9 @@ import { MessageService } from "../message.service";
 export class ExercisesComponent implements OnInit {
   title = 'Exercises';
   exercises!: Exercises;
+  displayedAnaerobicColumns: string[] = ['exerciseName', 'exerciseMuscles', 'exerciseEquipment', 'edit', 'delete'];
+
+  @ViewChild(MatAccordion) accordion!: MatAccordion;
 
   constructor(
     private exercisesService: ExercisesService,
@@ -18,11 +22,12 @@ export class ExercisesComponent implements OnInit {
   ) {}
 
   getExercises(): void {
-    this.exercisesService.getExercises()
-      .subscribe(exercises => {
-        console.log(exercises);
-        this.exercises = exercises
-      });
+    if (this.exercises === undefined) {
+      this.exercisesService.getExercises()
+        .subscribe(exercises => {
+          this.exercises = exercises
+        });
+    }
   }
 
   ngOnInit(): void {

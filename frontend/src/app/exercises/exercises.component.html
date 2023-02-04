@@ -1,6 +1,49 @@
-<h1>{{title}}</h1>
-<div><span>id: </span>{{exercises.aerobic_exercises.exercises[0].id}}</div>
-<div><span>name: </span>{{exercises.aerobic_exercises.exercises[0].name}}</div>
-<br/>
-<div><span>id: </span>{{exercises.anaerobic_exercises.muscle_groups[0].muscle_regions[0].exercises[0].id}}</div>
-<div><span>name: </span>{{exercises.anaerobic_exercises.muscle_groups[0].muscle_regions[0].exercises[0].name}}</div>
+<div style="width: 75vw; margin-left: auto; margin-right: auto">
+  <div class="mat-button">
+    <button mat-button (click)="accordion.openAll()">Expand All</button>
+    <button mat-button (click)="accordion.closeAll()">Collapse All</button>
+  </div>
+  <mat-accordion multi>
+    <div *ngFor="let muscleGroup of exercises.anaerobic_exercises.muscle_groups; let i = index">
+      <mat-expansion-panel [expanded]="i == 0">
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{muscleGroup.name}}</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div *ngFor="let muscleRegion of muscleGroup.muscle_regions">
+          <table mat-table [dataSource]="muscleRegion.exercises">
+            <ng-container matColumnDef="muscleRegionName">
+              <th mat-header-cell *matHeaderCellDef [attr.colspan]="5">{{muscleRegion.name}}</th>
+            </ng-container>
+
+            <ng-container matColumnDef="exerciseName">
+              <td mat-cell *matCellDef="let exercise" style="width: 31%;">{{exercise.name}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="exerciseMuscles">
+              <td mat-cell *matCellDef="let exercise" style="width: 31%;">{{exercise.targeted_muscles}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="exerciseEquipment">
+              <td mat-cell *matCellDef="let exercise" style="width: 31%;">{{exercise.equipment}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="edit">
+              <td mat-cell *matCellDef style="width: 3.5%;">
+                <span class="material-symbols-outlined">edit</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="delete">
+              <td mat-cell *matCellDef style="width: 3.5%;">
+                <span class="material-symbols-outlined">delete</span>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="['muscleRegionName']"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedAnaerobicColumns"></tr>
+          </table>
+        </div>
+      </mat-expansion-panel>
+    </div>
+  </mat-accordion>
+</div>

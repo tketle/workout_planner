@@ -14,7 +14,7 @@ _exercises = None
 def exercises():
     global _exercises
     if _exercises is None:
-        filename = os.path.join(app.static_folder, 'exercises.json')
+        filename = 'planner/exercises.json'
         with open(filename) as file:
             _exercises = json.load(file)
 

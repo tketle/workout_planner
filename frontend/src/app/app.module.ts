@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ExercisesComponent } from './exercises/exercises.component';
 import { MessagesComponent } from './messages/messages.component';
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MatTableModule} from "@angular/material/table";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -16,7 +19,10 @@ import { MessagesComponent } from './messages/messages.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatExpansionModule,
+    MatTableModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

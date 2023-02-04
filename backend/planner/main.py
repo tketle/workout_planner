@@ -12,7 +12,7 @@ _workouts = []
 
 
 def parse_exercises(exercises, muscle_groups, muscle_regions):
-    with open('planner/static/exercises.json') as f:
+    with open('planner/exercises.json') as f:
         data = load(f)
 
         aerobic_exercises = {}
