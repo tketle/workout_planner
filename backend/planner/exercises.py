@@ -18,7 +18,7 @@ def exercises():
         with open(filename) as file:
             _exercises = json.load(file)
 
-    return render_template('exercises/exercises.html', exercises=_exercises)
+    return _exercises
 
 
 @bp.get('/exercises/anaerobic/exercises')
