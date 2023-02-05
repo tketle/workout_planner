@@ -9,12 +9,16 @@ import { MessagesComponent } from './messages/messages.component';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTableModule} from "@angular/material/table";
 import {MatButtonModule} from "@angular/material/button";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatDialogModule} from "@angular/material/dialog";
+import { DeleteDialogComponent } from './exercises/delete-dialog/delete-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ExercisesComponent,
-    MessagesComponent
+    MessagesComponent,
+    DeleteDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +26,8 @@ import {MatButtonModule} from "@angular/material/button";
     HttpClientModule,
     MatExpansionModule,
     MatTableModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

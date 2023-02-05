@@ -5,13 +5,16 @@ import { MessageService } from "./message.service";
 import {catchError, map, Observable, of, tap} from "rxjs";
 import {API_URL} from "./env";
 import {MOCK_EXERCISES} from "./model/mock-exercises";
+import {AnaerobicExercise} from "./model/AnaerobicExercise";
+import {DeleteExerciseResponse} from "./model/DeleteExerciseResponse";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExercisesService {
 
-  private exercisesUrl = API_URL + "/exercises";
+  private getExercisesUrl = API_URL + "/exercises";
+  private deleteAnaerobicExerciseUrl = API_URL + "/exercises/anaerobic/";
 
   constructor(
     private httpClient: HttpClient,
@@ -19,12 +22,16 @@ export class ExercisesService {
   ) { }
 
   getExercises(): Observable<Exercises> {
-    return this.httpClient.get<Exercises>(this.exercisesUrl)
+    return this.httpClient.get<Exercises>(this.getExercisesUrl)
       .pipe(
         map(this.parseExercisesResponse),
         tap(_ => this.log("fetched exercises")),
         catchError(this.handleError<Exercises>('getExercises', MOCK_EXERCISES))
       );
+  }
+
+  deleteExercise(exerciseId: string): Observable<DeleteExerciseResponse> {
+    return this.httpClient.delete<DeleteExerciseResponse>(this.deleteAnaerobicExerciseUrl + exerciseId);
   }
 
   private parseExercisesResponse(response: any) {

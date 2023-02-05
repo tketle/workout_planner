@@ -3,6 +3,9 @@ import { Exercises } from "../model/exercises";
 import { ExercisesService } from "../exercises.service";
 import { MessageService } from "../message.service";
 import {MatAccordion} from "@angular/material/expansion";
+import {MatDialog} from "@angular/material/dialog";
+import {DeleteDialogComponent} from "./delete-dialog/delete-dialog.component";
+import {DeleteExerciseResponse} from "../model/DeleteExerciseResponse";
 
 @Component({
   selector: 'app-exercises',
@@ -10,7 +13,6 @@ import {MatAccordion} from "@angular/material/expansion";
   styleUrls: ['./exercises.component.css']
 })
 export class ExercisesComponent implements OnInit {
-  title = 'Exercises';
   exercises!: Exercises;
   displayedAnaerobicColumns: string[] = ['exerciseName', 'exerciseMuscles', 'exerciseEquipment', 'edit', 'delete'];
 
@@ -18,8 +20,19 @@ export class ExercisesComponent implements OnInit {
 
   constructor(
     private exercisesService: ExercisesService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    public dialog: MatDialog
   ) {}
+
+  openDialog(exerciseId: string, exerciseName: string): void {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: {id: exerciseId, name: exerciseName}
+    });
+
+    dialogRef.afterClosed().subscribe(deleteResponse => {
+      this.updateExercises(deleteResponse);
+    })
+  }
 
   getExercises(): void {
     if (this.exercises === undefined) {
@@ -28,6 +41,13 @@ export class ExercisesComponent implements OnInit {
           this.exercises = exercises
         });
     }
+  }
+
+  updateExercises(deleteResponse: DeleteExerciseResponse): void {
+    this.exercises.anaerobic_exercises
+      .muscle_groups[deleteResponse.group_idx]
+      .muscle_regions[deleteResponse.region_idx]
+      .exercises = deleteResponse.exercises;
   }
 
   ngOnInit(): void {
