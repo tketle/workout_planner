@@ -1,7 +1,3 @@
-body {
-  overflow-y: scroll;
-}
-
 .material-symbols-outlined {
   font-variation-settings:
   'FILL' 0,
@@ -19,6 +15,22 @@ body {
   'opsz' 40
 }
 
-.mat-raised-button {
-  margin: 2px;
+mat-expansion-panel-header {
+  background-color: var(--primary-color);
+}
+
+mat-expansion-panel-header:hover {
+  background-color: var(--primary-color);
+}
+
+.exercise-table {
+  background-color: var(--accent-lighter-color)
+}
+
+.exercise-table th {
+  background-color: var(--primary-lighter-color);
+}
+
+.mat-expanded {
+
 }

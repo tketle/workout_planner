@@ -1,4 +1,4 @@
-<div style="width: 75vw; margin-left: auto; margin-right: auto">
+<div *ngIf="exercises !== undefined" style="width: 75vw; margin-left: auto; margin-right: auto;">
   <div>
     <button mat-stroked-button (click)="accordion.openAll()">Expand All</button>
     <button mat-stroked-button (click)="accordion.closeAll()">Collapse All</button>
@@ -6,14 +6,14 @@
   <mat-accordion multi="true">
     <div *ngFor="let muscleGroup of exercises.anaerobic_exercises.muscle_groups; let i = index">
       <mat-expansion-panel [expanded]="i == 0">
-        <mat-expansion-panel-header>
+        <mat-expansion-panel-header class="panel-header">
           <mat-panel-title>{{muscleGroup.name}}</mat-panel-title>
           <span style="margin-right: 15px;"><button mat-stroked-button>Add</button></span>
         </mat-expansion-panel-header>
         <div *ngFor="let muscleRegion of muscleGroup.muscle_regions">
-          <table mat-table [dataSource]="muscleRegion.exercises">
+          <table mat-table [dataSource]="muscleRegion.exercises" class="exercise-table mat-elevation-z2">
             <ng-container matColumnDef="muscleRegionName">
-              <th mat-header-cell *matHeaderCellDef [attr.colspan]="5">{{muscleRegion.name}}</th>
+              <th mat-header-cell *matHeaderCellDef [attr.colspan]="displayedAnaerobicColumns.length">{{muscleRegion.name}}</th>
             </ng-container>
 
             <ng-container matColumnDef="exerciseName">
@@ -40,7 +40,11 @@
 
             <tr mat-header-row *matHeaderRowDef="['muscleRegionName']"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedAnaerobicColumns"></tr>
+            <tr class="mat-mdc-row mdc-data-table__row" *matNoDataRow>
+              <td class="mat-mdc-cell mdc-data-table__cell"><i>No data to display</i></td>
+            </tr>
           </table>
+          <mat-divider></mat-divider>
         </div>
       </mat-expansion-panel>
     </div>

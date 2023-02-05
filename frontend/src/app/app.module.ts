@@ -12,6 +12,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatDialogModule} from "@angular/material/dialog";
 import { DeleteDialogComponent } from './exercises/delete-dialog/delete-dialog.component';
+import {MatDividerModule} from "@angular/material/divider";
 
 @NgModule({
   declarations: [
@@ -20,15 +21,16 @@ import { DeleteDialogComponent } from './exercises/delete-dialog/delete-dialog.c
     MessagesComponent,
     DeleteDialogComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    MatExpansionModule,
-    MatTableModule,
-    MatButtonModule,
-    MatDialogModule
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        MatExpansionModule,
+        MatTableModule,
+        MatButtonModule,
+        MatDialogModule,
+        MatDividerModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

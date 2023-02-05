@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import { Exercises } from "../model/exercises";
-import { ExercisesService } from "../exercises.service";
-import { MessageService } from "../message.service";
-import {MatAccordion} from "@angular/material/expansion";
+import { ExercisesService } from "./exercises.service";
+import { MessageService } from "../messages/message.service";
+import {MatAccordion, MatExpansionPanel} from "@angular/material/expansion";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteDialogComponent} from "./delete-dialog/delete-dialog.component";
 import {DeleteExerciseResponse} from "../model/DeleteExerciseResponse";
@@ -17,6 +17,7 @@ export class ExercisesComponent implements OnInit {
   displayedAnaerobicColumns: string[] = ['exerciseName', 'exerciseMuscles', 'exerciseEquipment', 'edit', 'delete'];
 
   @ViewChild(MatAccordion) accordion!: MatAccordion;
+  @ViewChild(MatExpansionPanel) expansionPanel!: MatExpansionPanel;
 
   constructor(
     private exercisesService: ExercisesService,
@@ -30,7 +31,7 @@ export class ExercisesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(deleteResponse => {
-      this.updateExercises(deleteResponse);
+      this.updateExercisesAfterDelete(deleteResponse);
     })
   }
 
@@ -43,7 +44,7 @@ export class ExercisesComponent implements OnInit {
     }
   }
 
-  updateExercises(deleteResponse: DeleteExerciseResponse): void {
+  updateExercisesAfterDelete(deleteResponse: DeleteExerciseResponse): void {
     this.exercises.anaerobic_exercises
       .muscle_groups[deleteResponse.group_idx]
       .muscle_regions[deleteResponse.region_idx]

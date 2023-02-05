@@ -1,7 +1,6 @@
 import {Component, Inject} from '@angular/core';
-import { ExercisesService } from "../../exercises.service";
+import { ExercisesService } from "../exercises.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {DeleteExerciseResponse} from "../../model/DeleteExerciseResponse";
 
 export interface Data {
   id: string,

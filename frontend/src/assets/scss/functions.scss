@@ -1,0 +1,10 @@
+@use '../../../node_modules/@angular/material' as mat;
+@mixin generate-theme-vars($theme) {
+  --primary-color: #{mat.get-color-from-palette(map-get($theme, primary))};
+  --primary-lighter-color: #{mat.get-color-from-palette(map-get($theme, primary), lighter)};
+  --primary-darker-color: #{mat.get-color-from-palette(map-get($theme, primary), darker)};
+
+  --accent-color: #{mat.get-color-from-palette(map-get($theme, accent))};
+  --accent-lighter-color: #{mat.get-color-from-palette(map-get($theme, accent), lighter)};
+  --accent-darker-color: #{mat.get-color-from-palette(map-get($theme, accent), darker)};
+}

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Exercises } from "./model/exercises";
+import { Exercises } from "../model/exercises";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { MessageService } from "./message.service";
+import { MessageService } from "../messages/message.service";
 import {catchError, map, Observable, of, tap} from "rxjs";
-import {API_URL} from "./env";
-import {MOCK_EXERCISES} from "./model/mock-exercises";
-import {AnaerobicExercise} from "./model/AnaerobicExercise";
-import {DeleteExerciseResponse} from "./model/DeleteExerciseResponse";
+import {API_URL} from "../env";
+import {MOCK_EXERCISES} from "../model/mock-exercises";
+import {AnaerobicExercise} from "../model/AnaerobicExercise";
+import {DeleteExerciseResponse} from "../model/DeleteExerciseResponse";
 
 @Injectable({
   providedIn: 'root'
