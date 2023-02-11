@@ -1,0 +1,12 @@
+@use 'themes/my-theme' as theme;
+@use '../../node_modules/@angular/material/index' as mat;
+
+$theme: theme.$workout-planner-theme;
+
+$primary-color: mat.get-color-from-palette(map-get($theme, primary));
+$primary-lighter-color: mat.get-color-from-palette(map-get($theme, primary), lighter);
+$primary-darker-color: mat.get-color-from-palette(map-get($theme, primary), darker);
+
+$accent-color: mat.get-color-from-palette(map-get($theme, accent));
+$accent-lighter-color: mat.get-color-from-palette(map-get($theme, accent), lighter);
+$accent-darker-color: mat.get-color-from-palette(map-get($theme, accent), darker);

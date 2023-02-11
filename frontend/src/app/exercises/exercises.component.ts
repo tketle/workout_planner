@@ -10,7 +10,7 @@ import {DeleteExerciseResponse} from "../model/DeleteExerciseResponse";
 @Component({
   selector: 'app-exercises',
   templateUrl: './exercises.component.html',
-  styleUrls: ['./exercises.component.css']
+  styleUrls: ['../../styles/exercises.component.scss']
 })
 export class ExercisesComponent implements OnInit {
   exercises!: Exercises;

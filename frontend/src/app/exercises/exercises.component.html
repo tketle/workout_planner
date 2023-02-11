@@ -8,7 +8,7 @@
       <mat-expansion-panel [expanded]="i == 0">
         <mat-expansion-panel-header class="panel-header">
           <mat-panel-title>{{muscleGroup.name}}</mat-panel-title>
-          <span style="margin-right: 15px;"><button mat-stroked-button>Add</button></span>
+          <span style="margin-right: 15px;"><button mat-raised-button>Add</button></span>
         </mat-expansion-panel-header>
         <div *ngFor="let muscleRegion of muscleGroup.muscle_regions">
           <table mat-table [dataSource]="muscleRegion.exercises" class="exercise-table mat-elevation-z2">

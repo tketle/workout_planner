@@ -10,7 +10,7 @@ export interface Data {
 @Component({
   selector: 'app-delete-dialog',
   templateUrl: './delete-dialog.component.html',
-  styleUrls: ['./delete-dialog.component.css']
+  styleUrls: ['../../../styles/delete-dialog.component.css']
 })
 export class DeleteDialogComponent {
 
