@@ -29,7 +29,9 @@ export const MOCK_EXERCISES: Exercises = {
                 id: "test_id6",
                 name: "test_exercise",
                 targeted_muscles: ["foo"],
-                equipment: "test_equipment"
+                equipment: "test_equipment",
+                editing: false,
+                isNew: false
               }
             ]
           }

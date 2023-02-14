@@ -3,4 +3,6 @@ export interface AnaerobicExercise {
   name: string;
   targeted_muscles: string[];
   equipment: string;
+  editing: boolean;
+  isNew: boolean;
 }

@@ -13,6 +13,10 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatDialogModule} from "@angular/material/dialog";
 import { DeleteDialogComponent } from './exercises/delete-dialog/delete-dialog.component';
 import {MatDividerModule} from "@angular/material/divider";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {FormsModule} from "@angular/forms";
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -29,7 +33,11 @@ import {MatDividerModule} from "@angular/material/divider";
         MatTableModule,
         MatButtonModule,
         MatDialogModule,
-        MatDividerModule
+        MatDividerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        MatSelectModule
     ],
   providers: [],
   bootstrap: [AppComponent]
