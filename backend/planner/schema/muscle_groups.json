@@ -1,0 +1,18 @@
+[
+	{
+		"id": "7297e9e4-aee1-44bf-a8d9-7d6432dfe032",
+		"name": "Push"
+	},
+	{
+		"id": "03a7c31c-f0f8-499a-97a4-3f906532911c",
+		"name": "Pull"
+	},
+	{
+		"id": "033ad14d-8e57-4131-bed8-0e62af27c95c",
+		"name": "Core"
+	},
+	{
+		"id": "39d7068c-b7d4-4cb4-8adb-f18a51386273",
+		"name": "Legs"
+	}
+]

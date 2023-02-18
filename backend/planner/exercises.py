@@ -1,29 +1,38 @@
 import os
 from flask import (
-    Blueprint, render_template, json, current_app as app
+    Blueprint, json, current_app as app
 )
-
-from re import sub
 
 
 bp = Blueprint('exercises', __name__, url_prefix=None)
-_exercises = None
 
 
-@bp.get('/exercises')
-def exercises():
-    global _exercises
-    if _exercises is None:
-        filename = 'planner/exercises.json'
-        with open(filename) as file:
-            _exercises = json.load(file)
+_exercise_schema = {
+    'muscle_groups': None, 'muscle_regions': None,
+    'aerobic_exercises': None, 'anaerobic_exercises': None
+}
 
-    return _exercises
+
+def init():
+    global _exercise_schema
+    for key in _exercise_schema:
+        with open('planner/schema/' + key + '.json') as file:
+            _exercise_schema[key] = json.load(file)
 
 
 @bp.get('/exercises/anaerobic/exercises')
-def get_anaerobic_exercises():
-    return _exercises['exercises'][1]
+def anaerobic_exercises():
+    return _exercise_schema['anaerobic_exercises']
+
+
+@bp.get('/exercises/anaerobic/musclegroups')
+def muscle_groups():
+    return _exercise_schema['muscle_groups']
+
+
+@bp.get('/exercises/anaerobic/muscleregions')
+def muscle_regions():
+    return _exercise_schema['muscle_regions']
 
 
 @bp.post('/exercises/anaerobic/<exercise_id>')
@@ -33,34 +42,16 @@ def update_anaerobic_exercise(exercise_id):
 
 @bp.delete('/exercises/anaerobic/<exercise_id>')
 def delete_anaerobic_exercise(exercise_id):
-    muscle_group, muscle_region, exercise = find_anaerobic_exercise(exercise_id)
-    muscle_region[1]['exercises'].remove(exercise)
+    _exercise_schema['anaerobic_exercises'][:] = \
+        [exercise for exercise in _exercise_schema['anaerobic_exercises']
+            if not exercise.id == exercise_id]
 
-    #update_exercises_file()
+    #update_schema('anaerobic_exercises')
 
-    return {
-        'group_idx': muscle_group[0],
-        'region_idx': muscle_region[0],
-        'exercises': muscle_region[1]['exercises']
-    }
+    return _exercise_schema['anaerobic_exercises']
 
 
-@bp.context_processor
-def utility_processor():
-    def replace_whitespace_and_special_characters(text):
-        return sub('[^a-z\\d]', '_', text)
-    return dict(treat_text=replace_whitespace_and_special_characters)
-
-
-def update_exercises_file():
-    filename = os.path.join(app.static_folder, 'exercises.json')
+def update_schema(schema):
+    filename = os.path.join(app.static_folder, 'schema/' + schema + '.json')
     with open(filename, 'w') as f:
-        json.dump(_exercises, f, sort_keys=False, indent=4)
-
-
-def find_anaerobic_exercise(exercise_id):
-    for i, muscle_group in enumerate(_exercises['exercises'][1]['muscle_groups']):
-        for j, muscle_region in enumerate(muscle_group['muscle_regions']):
-            for k, exercise in enumerate(muscle_region['exercises']):
-                if exercise['id'] == exercise_id:
-                    return (i, muscle_group), (j, muscle_region), exercise
+        json.dump(_exercise_schema[schema], f, sort_keys=False, indent=4)

@@ -1,4 +1,5 @@
 import { Exercises } from "./exercises";
+import {MuscleRegion} from "./MuscleRegion";
 
 export const MOCK_EXERCISES: Exercises = {
   aerobic_exercises: {
@@ -30,8 +31,7 @@ export const MOCK_EXERCISES: Exercises = {
                 name: "test_exercise",
                 targeted_muscles: ["foo"],
                 equipment: "test_equipment",
-                editing: false,
-                isNew: false
+                muscle_region: 'test_id4'
               }
             ]
           }

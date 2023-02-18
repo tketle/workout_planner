@@ -1,0 +1,62 @@
+[
+	{
+		"id": "a27eb84b-cc11-418d-8f67-7e36cca172a1",
+		"name": "Chest",
+		"muscles": ["chest muscle 1", "chest muscle 2"],
+		"muscle_group": "7297e9e4-aee1-44bf-a8d9-7d6432dfe032"
+	},
+	{
+		"id": "e8ac01c2-4cd7-42af-b610-e5c7164c36af",
+		"name": "Shoulders",
+		"muscles": ["shoulder muscle 1", "shoulder muscle 2"],
+		"muscle_group": "7297e9e4-aee1-44bf-a8d9-7d6432dfe032"
+	},
+	{
+		"id": "5a1c6a44-81e1-4666-b51e-c9a9ae1891ac",
+		"name": "Triceps",
+		"muscles": ["triceps"],
+		"muscle_group": "7297e9e4-aee1-44bf-a8d9-7d6432dfe032"
+	},
+	{
+		"id": "b7cf8e13-da20-4bbd-b6f2-ff0aaee57695",
+		"name": "Back",
+		"muscles": ["back muscle 1", "back muscle 2"],
+		"muscle_group": "03a7c31c-f0f8-499a-97a4-3f906532911c"
+	},
+	{
+		"id": "febc1aa9-571a-4232-b63e-65eeb6b6c06d",
+		"name": "Biceps",
+		"muscles": ["biceps"],
+		"muscle_group": "03a7c31c-f0f8-499a-97a4-3f906532911c"
+	},
+	{
+		"id": "7af80881-7a47-4364-b8a6-7f5aeef3e961",
+		"name": "Upper Abs",
+		"muscles": ["upper abs"],
+		"muscle_group": "033ad14d-8e57-4131-bed8-0e62af27c95c"
+	},
+	{
+		"id": "f9d1c2b5-710c-4829-a210-f3b1791c0e25",
+		"name": "Mid Abs/Obliques",
+		"muscles": ["mid abs", "obliques"],
+		"muscle_group": "033ad14d-8e57-4131-bed8-0e62af27c95c"
+	},
+	{
+		"id": "729b19d9-c4b2-455b-9615-451d887b1657",
+		"name": "Lower Abs",
+		"muscles": ["lower abs"],
+		"muscle_group": "033ad14d-8e57-4131-bed8-0e62af27c95c"
+	},
+	{
+		"id": "7a0a7cd2-73d7-4cfd-8133-a20e5e2b2433",
+		"name": "Upper Legs",
+		"muscles": ["upper legs muscle 1", "upper legs muscle 2"],
+		"muscle_group": "39d7068c-b7d4-4cb4-8adb-f18a51386273"
+	},
+	{
+		"id": "075aaf23-8a8a-4efe-bc93-8222cc960f6f",
+		"name": "Lower Legs",
+		"muscles": ["lower legs muscle 1", "lower legs muscle 2"],
+		"muscle_group": "39d7068c-b7d4-4cb4-8adb-f18a51386273"
+	}
+]

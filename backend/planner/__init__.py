@@ -20,5 +20,6 @@ def create_app(test_config=None):
 
     from . import exercises
     app.register_blueprint(exercises.bp)
+    exercises.init()
 
     return app
