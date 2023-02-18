@@ -9,18 +9,19 @@
         <mat-expansion-panel-header class="panel-header">
           <mat-panel-title>{{muscleGroup.name}}</mat-panel-title>
         </mat-expansion-panel-header>
-        <div *ngFor="let muscleRegion of muscleGroup.muscle_regions; let mr_idx = index">
+        <div *ngFor="let muscleRegion of muscleGroup.muscle_regions;">
           <table mat-table [dataSource]="muscleRegion.exercises" class="exercise-table mat-elevation-z2">
+            <!-- Column definitions -->
             <ng-container matColumnDef="muscleRegionName">
               <th mat-header-cell *matHeaderCellDef [attr.colspan]="displayedAnaerobicColumns.length">{{muscleRegion.name}}</th>
             </ng-container>
 
             <ng-container matColumnDef="{{col.key}}" *ngFor="let col of columnSchema">
-              <td mat-cell *matCellDef="let exercise" style="{{col.style}}">
+              <td mat-cell *matCellDef="let exercise; let exercise_idx = index;" style="{{col.style}}">
                 <!-- Read display -->
-                <div ngSwitch="{{col.type}}" *ngIf="!exercise.editing">
+                <div ngSwitch="{{col.type}}" *ngIf="!isEditingOrCreating(exercise.id)">
                   <div *ngSwitchCase="'edit_or_done'">
-                    <span class="material-symbols-outlined" (click)="exercise.editing = !exercise.editing">edit</span>
+                    <span class="material-symbols-outlined" (click)="startEdit(muscleRegion, exercise_idx);">edit</span>
                   </div>
                   <div *ngSwitchCase="'delete_or_cancel'">
                     <span class="material-symbols-outlined" (click)="openDialog(exercise.id, exercise.name)">delete</span>
@@ -31,12 +32,12 @@
                 </div>
 
                 <!-- Edit display -->
-                <div ngSwitch="{{col.type}}" *ngIf="exercise.editing">
+                <div ngSwitch="{{col.type}}" *ngIf="isEditingOrCreating(exercise.id)">
                   <div *ngSwitchCase="'edit_or_done'">
-                    <span class="material-symbols-outlined" (click)="exercise.editing = !exercise.editing">done</span>
+                    <span class="material-symbols-outlined" (click)="saveChanges();">done</span>
                   </div>
                   <div *ngSwitchCase="'delete_or_cancel'">
-                    <span class="material-symbols-outlined" (click)="exercise.editing = !exercise.editing">close</span>
+                    <span class="material-symbols-outlined" (click)="cancelEdit(muscleGroup.id, muscleRegion.id, exercise);">close</span>
                   </div>
                   <div *ngSwitchCase="'array'">
                     <mat-form-field appearance="fill">
@@ -59,12 +60,14 @@
             <!-- Add -->
             <ng-container matColumnDef="add">
               <td mat-cell *matFooterCellDef [attr.colspan]="displayedAnaerobicColumns.length">
-                <button mat-stroked-button style="width: 100%;" (click)="addRow(mg_idx, mr_idx);">
+                <button mat-stroked-button style="width: 100%;" (click)="addRow(muscleRegion);">
                   <span style="padding: 50%;" class="material-symbols-outlined add-btn">add</span>
                 </button>
               </td>
             </ng-container>
+            <!-- End column definitions -->
 
+            <!-- Row definitions -->
             <!-- Header -->
             <tr mat-header-row *matHeaderRowDef="['muscleRegionName']"></tr>
 
@@ -78,6 +81,7 @@
 
             <!-- Add button -->
             <tr mat-footer-row *matFooterRowDef="['add']"></tr>
+            <!-- End row definitions -->
           </table>
         </div>
       </mat-expansion-panel>

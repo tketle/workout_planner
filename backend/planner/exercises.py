@@ -6,7 +6,6 @@ from flask import (
 
 bp = Blueprint('exercises', __name__, url_prefix=None)
 
-
 _exercise_schema = {
     'muscle_groups': None, 'muscle_regions': None,
     'aerobic_exercises': None, 'anaerobic_exercises': None
@@ -18,6 +17,18 @@ def init():
     for key in _exercise_schema:
         with open('planner/schema/' + key + '.json') as file:
             _exercise_schema[key] = json.load(file)
+
+
+@bp.get('/exercises/aerobic/exercises')
+def aerobic_exercises():
+    return _exercise_schema['aerobic_exercises']
+
+
+@bp.get("/exercises/anaerobic")
+def anaerobic_data():
+    return {'anaerobic_exercises': _exercise_schema['anaerobic_exercises'],
+            'muscle_groups': _exercise_schema['muscle_groups'],
+            'muscle_regions': _exercise_schema['muscle_regions']}
 
 
 @bp.get('/exercises/anaerobic/exercises')
@@ -44,7 +55,7 @@ def update_anaerobic_exercise(exercise_id):
 def delete_anaerobic_exercise(exercise_id):
     _exercise_schema['anaerobic_exercises'][:] = \
         [exercise for exercise in _exercise_schema['anaerobic_exercises']
-            if not exercise.id == exercise_id]
+            if not exercise['id'] == exercise_id]
 
     #update_schema('anaerobic_exercises')
 
