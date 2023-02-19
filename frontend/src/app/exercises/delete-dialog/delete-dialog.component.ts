@@ -25,7 +25,7 @@ export class DeleteDialogComponent {
   }
 
   onDeleteClick(): void {
-    this.exercisesService.deleteExercise(this.data.id)
+    this.exercisesService.deleteAnaerobicExercise(this.data.id)
       .subscribe(response => {
         this.dialogRef.close(response);
       });

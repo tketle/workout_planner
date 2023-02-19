@@ -1,44 +1,60 @@
 import { Injectable } from '@angular/core';
-import { Exercises } from "../model/exercises";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { MessageService } from "../messages/message.service";
 import {catchError, map, Observable, of, tap} from "rxjs";
-import {API_URL} from "../env";
-import {MOCK_EXERCISES} from "../model/mock-exercises";
+import {API_HOST_NAME} from "../env";
+import {MockExercisesUtil} from "../model/mock-exercises-util";
+import {AerobicExercise} from "../model/AerobicExercise";
 import {AnaerobicExercise} from "../model/AnaerobicExercise";
-import {DeleteExerciseResponse} from "../model/DeleteExerciseResponse";
+import {MuscleGroup} from "../model/MuscleGroup";
+import {MuscleRegion} from "../model/MuscleRegion";
+import {AnaerobicData} from "../model/AnaerobicData";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExercisesService {
 
-  private getExercisesUrl = API_URL + "/exercises";
-  private deleteAnaerobicExerciseUrl = API_URL + "/exercises/anaerobic/";
-
   constructor(
     private httpClient: HttpClient,
     private messageService: MessageService
   ) { }
 
-  getExercises(): Observable<Exercises> {
-    return this.httpClient.get<Exercises>(this.getExercisesUrl)
+  getAerobicExercises(): Observable<AerobicExercise[]> {
+    return this.httpClient.get<AerobicExercise[]>(API_HOST_NAME + "/exercises/aerobic/exercises")
       .pipe(
-        map(this.parseExercisesResponse),
-        tap(_ => this.log("fetched exercises")),
-        catchError(this.handleError<Exercises>('getExercises', MOCK_EXERCISES))
+        tap(_ => this.log("fetched aerobic exercises")),
+        catchError(this.handleError<AerobicExercise[]>('getAerobicExercises', MockExercisesUtil.MOCK_AEROBIC_EXERCISES))
       );
   }
 
-  deleteExercise(exerciseId: string): Observable<DeleteExerciseResponse> {
-    return this.httpClient.delete<DeleteExerciseResponse>(this.deleteAnaerobicExerciseUrl + exerciseId);
+  getAnaerobicData(): Observable<AnaerobicData> {
+    return this.httpClient.get<AnaerobicData>(API_HOST_NAME + "/exercises/anaerobic")
+      .pipe(
+        tap(_ => this.log("fetched anaerobic data")),
+        catchError(this.handleError<AnaerobicData>('getAnaerobicData',
+          {
+            'anaerobic_exercises': MockExercisesUtil.MOCK_ANAEROBIC_EXERCISES,
+            'muscle_groups': MockExercisesUtil.MOCK_MUSCLE_GROUPS,
+            'muscle_regions': MockExercisesUtil.MOCK_MUSCLE_REGIONS
+          }
+        ))
+      );
   }
 
-  private parseExercisesResponse(response: any) {
-    return {
-      aerobic_exercises: response.exercises[0],
-      anaerobic_exercises: response.exercises[1]
-    };
+  addAnaerobicExercise(exercise: AnaerobicExercise): Observable<any> {
+    return this.httpClient.post<any>(API_HOST_NAME + "/exercises/anaerobic/exercises", exercise)
+      .pipe(tap(_ => this.log("added anaerobic exercise")));
+  }
+
+  updateAnaerobicExercise(exercise: AnaerobicExercise): Observable<any> {
+    return this.httpClient.put<any>(API_HOST_NAME + "/exercises/anaerobic/exercises", exercise)
+      .pipe(tap(_ => this.log("updated anaerobic exercise")));
+  }
+
+  deleteAnaerobicExercise(exerciseId: string): Observable<any> {
+    return this.httpClient.delete<AnaerobicExercise[]>(API_HOST_NAME + '/exercises/anaerobic/' + exerciseId)
+      .pipe(tap(_ => this.log("deleted anaerobic exercise")));
   }
 
   private log(message: string) {

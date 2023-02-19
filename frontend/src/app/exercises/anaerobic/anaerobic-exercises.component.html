@@ -1,27 +1,27 @@
-<div *ngIf="exercises !== undefined" style="width: 75vw; margin-left: auto; margin-right: auto;">
+<div *ngIf="anaerobic_exercises !== undefined" style="width: 75vw; margin-left: auto; margin-right: auto;">
   <div>
     <button mat-stroked-button (click)="accordion.openAll()">Expand All</button>
     <button mat-stroked-button (click)="accordion.closeAll()">Collapse All</button>
   </div>
   <mat-accordion multi="true">
-    <div *ngFor="let muscleGroup of exercises.anaerobic_exercises.muscle_groups; let mg_idx = index">
+    <div *ngFor="let muscleGroup of muscle_groups; let mg_idx = index">
       <mat-expansion-panel [expanded]="mg_idx == 0">
         <mat-expansion-panel-header class="panel-header">
           <mat-panel-title>{{muscleGroup.name}}</mat-panel-title>
         </mat-expansion-panel-header>
-        <div *ngFor="let muscleRegion of muscleGroup.muscle_regions;">
-          <table mat-table [dataSource]="muscleRegion.exercises" class="exercise-table mat-elevation-z2">
+        <div *ngFor="let muscleRegion of getMuscleRegionsInGroup(muscleGroup.id)">
+          <table mat-table [dataSource]="getAnaerobicExercisesInRegion(muscleRegion.id)" class="exercise-table mat-elevation-z2">
             <!-- Column definitions -->
             <ng-container matColumnDef="muscleRegionName">
               <th mat-header-cell *matHeaderCellDef [attr.colspan]="displayedAnaerobicColumns.length">{{muscleRegion.name}}</th>
             </ng-container>
 
             <ng-container matColumnDef="{{col.key}}" *ngFor="let col of columnSchema">
-              <td mat-cell *matCellDef="let exercise; let exercise_idx = index;" style="{{col.style}}">
+              <td mat-cell *matCellDef="let exercise;" style="{{col.style}}">
                 <!-- Read display -->
                 <div ngSwitch="{{col.type}}" *ngIf="!isEditingOrCreating(exercise.id)">
                   <div *ngSwitchCase="'edit_or_done'">
-                    <span class="material-symbols-outlined" (click)="startEdit(muscleRegion, exercise_idx);">edit</span>
+                    <span class="material-symbols-outlined" (click)="startEdit(exercise.id);">edit</span>
                   </div>
                   <div *ngSwitchCase="'delete_or_cancel'">
                     <span class="material-symbols-outlined" (click)="openDialog(exercise.id, exercise.name)">delete</span>
@@ -34,23 +34,26 @@
                 <!-- Edit display -->
                 <div ngSwitch="{{col.type}}" *ngIf="isEditingOrCreating(exercise.id)">
                   <div *ngSwitchCase="'edit_or_done'">
-                    <span class="material-symbols-outlined" (click)="saveChanges();">done</span>
+                    <span class="material-symbols-outlined" (click)="saveChanges(exercise);">done</span>
                   </div>
                   <div *ngSwitchCase="'delete_or_cancel'">
-                    <span class="material-symbols-outlined" (click)="cancelEdit(muscleGroup.id, muscleRegion.id, exercise);">close</span>
+                    <span class="material-symbols-outlined" (click)="cancelEdit(exercise.id);">close</span>
                   </div>
-                  <div *ngSwitchCase="'array'">
+                  <div *ngSwitchCase="'map'">
                     <mat-form-field appearance="fill">
                       <mat-label>{{col.label}}</mat-label>
-                      <mat-select [ngModel]="exercise[col.key]" multiple>
-                        <mat-option *ngFor="let el of col.source" [value]="el">{{el}}</mat-option>
+                      <mat-select ngDefaultControl [(ngModel)]="exercise.targeted_muscles" multiple>
+                        <mat-option>-- None --</mat-option>
+                        <mat-optgroup *ngFor="let item of col.source | keyvalue" [label]="item.key">
+                          <mat-option *ngFor="let muscle of item.value" [value]="muscle">{{muscle}}</mat-option>
+                        </mat-optgroup>
                       </mat-select>
                     </mat-form-field>
                   </div>
                   <div *ngSwitchDefault>
                     <mat-form-field appearance="fill">
                       <mat-label>{{col.label}}</mat-label>
-                      <input matInput [ngModel]="exercise[col.key]">
+                      <input matInput [(ngModel)]="exercise[col.key]">
                     </mat-form-field>
                   </div>
                 </div>

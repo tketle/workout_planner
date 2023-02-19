@@ -1,14 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { Exercises } from "../../model/impl/ExercisesImpl";
 import { ExercisesService } from "../exercises.service";
 import { MessageService } from "../../messages/message.service";
 import {MatAccordion, MatExpansionPanel} from "@angular/material/expansion";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteDialogComponent} from "../delete-dialog/delete-dialog.component";
-import {DeleteExerciseResponse} from "../../model/DeleteExerciseResponse";
 import {AnaerobicExercise} from "../../model/AnaerobicExercise";
 import {v4 as uuidv4} from 'uuid';
 import {MuscleRegion} from "../../model/MuscleRegion";
+import {MuscleGroup} from "../../model/MuscleGroup";
 
 const COLUMNS_SCHEMA = [
   {
@@ -20,8 +19,8 @@ const COLUMNS_SCHEMA = [
   },
   {
     key: 'targeted_muscles',
-    type: 'array',
-    source: [''],
+    type: 'map',
+    source: {},
     label: 'Targeted Muscles',
     style: 'width: 31%;',
   },
@@ -62,7 +61,11 @@ enum State {
 })
 export class AnaerobicExercisesComponent implements OnInit {
   state: State = State.VIEWING;
-  exercises!: Exercises;
+
+  anaerobic_exercises!: AnaerobicExercise[];
+  muscle_groups!: MuscleGroup[];
+  muscle_regions!: MuscleRegion[];
+
   columnSchema = COLUMNS_SCHEMA;
   displayedAnaerobicColumns: string[] = this.columnSchema.map((col) => col.key);
 
@@ -79,12 +82,12 @@ export class AnaerobicExercisesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getExercises();
+    this.getAnaerobicData();
   }
 
   openDialog(exerciseId: string, exerciseName: string): void {
     if (this.state != State.VIEWING) {
-      // TODO: show error message
+      console.debug(State[this.state]);
       return;
     }
 
@@ -95,9 +98,9 @@ export class AnaerobicExercisesComponent implements OnInit {
       position: {top: '15%'}
     });
 
-    dialogRef.afterClosed().subscribe(deleteResponse => {
+    dialogRef.afterClosed().subscribe((deleteResponse: AnaerobicExercise[]) => {
       if (deleteResponse !== undefined) {
-        this.updateExercisesAfterDelete(deleteResponse);
+        this.removeExercise(exerciseId);
       }
 
       this.state = State.VIEWING;
@@ -109,9 +112,9 @@ export class AnaerobicExercisesComponent implements OnInit {
       && exerciseId == this.editExerciseId;
   }
 
-  addRow(muscleRegion: MuscleRegion): void {
+  addRow(muscleRegion: any): void {
     if (this.state != State.VIEWING) {
-      // TODO: show error message
+      console.debug(State[this.state]);
       return;
     }
 
@@ -125,80 +128,87 @@ export class AnaerobicExercisesComponent implements OnInit {
       muscle_region: muscleRegion.id
     };
 
-    muscleRegion.addExercise(newRow);
+    this.anaerobic_exercises.push(newRow);
     this.editExerciseId = newRow.id;
   }
 
-  startEdit(muscleRegion: MuscleRegion, exerciseIdx: number): void {
+  startEdit(exerciseId: string): void {
     if (this.state != State.VIEWING) {
-      // TODO: show error message
+      console.debug(State[this.state]);
       return;
     }
 
     this.state = State.EDITING;
-    this.editExerciseId = muscleRegion.exercises[exerciseIdx].id;
-    this.exerciseRestoreValue = structuredClone(muscleRegion.exercises[exerciseIdx]);
+    this.editExerciseId = exerciseId;
+    this.exerciseRestoreValue = structuredClone(this.anaerobic_exercises.find(
+      (exercise) => exercise.id == exerciseId));
   }
 
-  saveChanges(): void {
+  saveChanges(exercise: AnaerobicExercise): void {
+    if (this.state == State.EDITING) {
+      this.updateExercise(exercise);
+    }
+    else {
+      this.addExercise(exercise);
+    }
+
     this.exerciseRestoreValue = <AnaerobicExercise>{};
     this.editExerciseId = '';
     this.state = State.VIEWING;
   }
 
-  cancelEdit(muscleGroupId: string, muscleRegionId: string, exercise: AnaerobicExercise): void {
+  cancelEdit(exerciseId: string): void {
     if (this.state == State.CREATING) {
-      this.removeExercise(muscleGroupId, muscleRegionId, exercise);
+      this.removeExercise(exerciseId);
     }
     else {
-      this.restoreExerciseValue(muscleGroupId, muscleRegionId, exercise);
+      this.anaerobic_exercises.forEach((exercise, i) => {
+        if (exercise.id == exerciseId) {
+          this.anaerobic_exercises[i] = structuredClone(this.exerciseRestoreValue);
+          return;
+        }
+      });
     }
 
     this.state = State.VIEWING;
   }
 
-  getExercises(): void {
-    if (this.exercises === undefined) {
-      this.exercisesService.getExercises()
-        .subscribe(exercises => {
-          this.exercises = exercises
-          this.populateMuscles();
-        });
-    }
+  getAnaerobicData(): void {
+    this.exercisesService.getAnaerobicData()
+      .subscribe(anaerobicData => {
+        this.anaerobic_exercises = anaerobicData.anaerobic_exercises;
+        this.muscle_groups = anaerobicData.muscle_groups;
+        this.muscle_regions = anaerobicData.muscle_regions;
+        this.populateMuscles();
+      });
   }
 
-  removeExercise(muscleGroupId: string, muscleRegionId: string, exercise: AnaerobicExercise): void {
-    this.exercises.anaerobic_exercises
-        .findMuscleGroupById(muscleGroupId)
-        .findMuscleRegionById(muscleRegionId)
-        .removeExercise(exercise);
+  getMuscleRegionsInGroup(groupId: string): MuscleRegion[] {
+    return this.muscle_regions.filter((muscleRegion) => muscleRegion.muscle_group == groupId);
   }
 
-  restoreExerciseValue(muscleGroupId: string, muscleRegionId: string, exercise: AnaerobicExercise): void {
-    let foo: AnaerobicExercise = this.exercises.anaerobic_exercises
-        .findMuscleGroupById(muscleGroupId)
-        .findMuscleRegionById(muscleRegionId)
-        .findExerciseById(exercise.id);
-
-    foo.name = this.exerciseRestoreValue.name;
-    foo.targeted_muscles = this.exerciseRestoreValue.targeted_muscles;
-    foo.equipment = this.exerciseRestoreValue.equipment;
+  getAnaerobicExercisesInRegion(regionId: string): AnaerobicExercise[] {
+    return this.anaerobic_exercises.filter((anaerobicExercise) => anaerobicExercise.muscle_region == regionId);
   }
 
-  updateExercisesAfterDelete(deleteResponse: DeleteExerciseResponse): void {
-    this.exercises.anaerobic_exercises
-      .muscle_groups[deleteResponse.group_idx]
-      .muscle_regions[deleteResponse.region_idx]
-      .exercises = deleteResponse.exercises;
+  updateExercise(updatedExercise: AnaerobicExercise): void {
+    this.exercisesService.updateAnaerobicExercise(updatedExercise).subscribe();
+  }
+
+  addExercise(exercise: AnaerobicExercise): void {
+    this.exercisesService.addAnaerobicExercise(exercise).subscribe();
+  }
+
+  removeExercise(exerciseId: string): void {
+    this.anaerobic_exercises = this.anaerobic_exercises.filter(
+      (exercise) => exercise.id !== exerciseId);
   }
 
   populateMuscles(): void {
-    const muscles : string[] = [];
+    const muscles : any = {};
 
-    this.exercises.anaerobic_exercises.muscle_groups.forEach((muscleGroup) => {
-      muscleGroup.muscle_regions.forEach((muscleRegion) => {
-        muscles.push(...muscleRegion.muscles);
-      });
+    this.muscle_regions.forEach((muscleRegion) => {
+      muscles[muscleRegion.name] = muscleRegion.muscles;
     });
 
     this.columnSchema[1].source = muscles;
