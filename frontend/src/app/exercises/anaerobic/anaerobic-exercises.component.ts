@@ -3,7 +3,7 @@ import { ExercisesService } from "../exercises.service";
 import { MessageService } from "../../messages/message.service";
 import {MatAccordion, MatExpansionPanel} from "@angular/material/expansion";
 import {MatDialog} from "@angular/material/dialog";
-import {DeleteDialogComponent} from "../delete-dialog/delete-dialog.component";
+import {DeleteAnaerobicDialogComponent} from "./delete-anaerobic-dialog/delete-anaerobic-dialog.component";
 import {AnaerobicExercise} from "../../model/AnaerobicExercise";
 import {v4 as uuidv4} from 'uuid';
 import {MuscleRegion} from "../../model/MuscleRegion";
@@ -55,9 +55,9 @@ enum State {
 }
 
 @Component({
-  selector: 'app-exercises',
+  selector: 'app-anaerobic-exercises',
   templateUrl: './anaerobic-exercises.component.html',
-  styleUrls: ['../../../styles/exercises.component.scss']
+  styleUrls: ['../../../styles/anaerobic-exercises.component.scss']
 })
 export class AnaerobicExercisesComponent implements OnInit {
   state: State = State.VIEWING;
@@ -67,7 +67,7 @@ export class AnaerobicExercisesComponent implements OnInit {
   muscle_regions!: MuscleRegion[];
 
   columnSchema = COLUMNS_SCHEMA;
-  displayedAnaerobicColumns: string[] = this.columnSchema.map((col) => col.key);
+  displayedColumns: string[] = this.columnSchema.map((col) => col.key);
 
   editExerciseId!: string;
   exerciseRestoreValue!: AnaerobicExercise;
@@ -93,13 +93,13 @@ export class AnaerobicExercisesComponent implements OnInit {
 
     this.state = State.DELETING;
 
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+    const dialogRef = this.dialog.open(DeleteAnaerobicDialogComponent, {
       data: {id: exerciseId, name: exerciseName},
       position: {top: '15%'}
     });
 
-    dialogRef.afterClosed().subscribe((deleteResponse: AnaerobicExercise[]) => {
-      if (deleteResponse !== undefined) {
+    dialogRef.afterClosed().subscribe((response: any) => {
+      if (response !== undefined) {
         this.removeExercise(exerciseId);
       }
 

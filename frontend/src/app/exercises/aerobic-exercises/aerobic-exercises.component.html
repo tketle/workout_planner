@@ -1,0 +1,73 @@
+<div *ngIf="aerobic_exercises !== undefined" style="width: 75vw; margin-left: auto; margin-right: auto;">
+  <table mat-table [dataSource]="aerobic_exercises" class="exercise-table mat-elevation-z2">
+    <!-- Column definitions -->
+    <ng-container matColumnDef="header">
+      <th mat-header-cell *matHeaderCellDef [attr.colspan]="displayedColumns.length">Aerobic Exercises</th>
+    </ng-container>
+
+    <ng-container matColumnDef="{{col.key}}" *ngFor="let col of columnSchema">
+      <td mat-cell *matCellDef="let exercise;" style="{{col.style}}">
+        <!-- Read display -->
+        <div ngSwitch="{{col.type}}" *ngIf="!isEditingOrCreating(exercise.id)">
+          <div *ngSwitchCase="'edit_or_done'">
+            <span class="material-symbols-outlined" (click)="startEdit(exercise.id);">edit</span>
+          </div>
+          <div *ngSwitchCase="'delete_or_cancel'">
+            <span class="material-symbols-outlined" (click)="openDialog(exercise.id, exercise.name)">delete</span>
+          </div>
+          <div *ngSwitchDefault>
+            {{exercise[col.key]}}
+          </div>
+        </div>
+
+        <!-- Edit display -->
+        <div ngSwitch="{{col.type}}" *ngIf="isEditingOrCreating(exercise.id)">
+          <div *ngSwitchCase="'edit_or_done'">
+            <span class="material-symbols-outlined" (click)="saveChanges(exercise);">done</span>
+          </div>
+          <div *ngSwitchCase="'delete_or_cancel'">
+            <span class="material-symbols-outlined" (click)="cancelEdit(exercise.id);">close</span>
+          </div>
+          <div *ngSwitchCase="'array'">
+            <mat-form-field appearance="fill">
+              <mat-label>{{col.label}}</mat-label>
+              <mat-select ngDefaultControl [(ngModel)]="exercise[col.key]" multiple></mat-select>
+            </mat-form-field>
+          </div>
+          <div *ngSwitchDefault>
+            <mat-form-field appearance="fill">
+              <mat-label>{{col.label}}</mat-label>
+              <input matInput [(ngModel)]="exercise[col.key]">
+            </mat-form-field>
+          </div>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Add -->
+    <ng-container matColumnDef="add">
+      <td mat-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+        <button mat-stroked-button style="width: 100%;" (click)="addRow();">
+          <span style="padding: 50%;" class="material-symbols-outlined add-btn">add</span>
+        </button>
+      </td>
+    </ng-container>
+    <!-- End column definitions -->
+
+    <!-- Row definitions -->
+    <!-- Header -->
+    <tr mat-header-row *matHeaderRowDef="['header']"></tr>
+
+    <!-- Data -->
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+    <!-- No data -->
+    <tr class="mat-mdc-row mdc-data-table__row" *matNoDataRow>
+      <td class="mat-mdc-cell mdc-data-table__cell"><i>No data to display</i></td>
+    </tr>
+
+    <!-- Add button -->
+    <tr mat-footer-row *matFooterRowDef="['add']"></tr>
+    <!-- End row definitions -->
+  </table>
+</div>

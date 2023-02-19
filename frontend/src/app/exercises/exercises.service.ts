@@ -53,8 +53,23 @@ export class ExercisesService {
   }
 
   deleteAnaerobicExercise(exerciseId: string): Observable<any> {
-    return this.httpClient.delete<AnaerobicExercise[]>(API_HOST_NAME + '/exercises/anaerobic/' + exerciseId)
+    return this.httpClient.delete<any>(API_HOST_NAME + '/exercises/anaerobic/' + exerciseId)
       .pipe(tap(_ => this.log("deleted anaerobic exercise")));
+  }
+
+  addAerobicExercise(exercise: AerobicExercise): Observable<any> {
+    return this.httpClient.post<any>(API_HOST_NAME + "/exercises/aerobic/exercises", exercise)
+      .pipe(tap(_ => this.log("added aerobic exercise")));
+  }
+
+  updateAerobicExercise(exercise: AerobicExercise): Observable<any> {
+    return this.httpClient.put<any>(API_HOST_NAME + "/exercises/aerobic/exercises", exercise)
+      .pipe(tap(_ => this.log("updated aerobic exercise")));
+  }
+
+  deleteAerobicExercise(exerciseId: string): Observable<any> {
+    return this.httpClient.delete<AerobicExercise[]>(API_HOST_NAME + '/exercises/aerobic/' + exerciseId)
+      .pipe(tap(_ => this.log("deleted aerobic exercise")));
   }
 
   private log(message: string) {

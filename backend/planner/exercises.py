@@ -61,7 +61,7 @@ def add_anaerobic_exercise():
         next((i + first_matching for i, e in enumerate(_exercise_schema['anaerobic_exercises'][first_matching:])
               if e['muscle_region'] != exercise['muscle_region']), len(_exercise_schema['anaerobic_exercises']))
 
-    _exercise_schema['anaerobic_exercises'].insert(insert_pos, request.json)
+    _exercise_schema['anaerobic_exercises'].insert(insert_pos, exercise)
     update_schema('anaerobic_exercises')
 
     return '', HTTPStatus.NO_CONTENT
@@ -73,7 +73,9 @@ def update_anaerobic_exercise():
     for i, exercise in enumerate(_exercise_schema['anaerobic_exercises']):
         if exercise['id'] == updated_exercise['id']:
             _exercise_schema['anaerobic_exercises'][i] = updated_exercise
+
     update_schema('anaerobic_exercises')
+
     return '', HTTPStatus.NO_CONTENT
 
 
@@ -82,7 +84,40 @@ def delete_anaerobic_exercise(exercise_id):
     _exercise_schema['anaerobic_exercises'][:] = \
         [exercise for exercise in _exercise_schema['anaerobic_exercises']
             if not exercise['id'] == exercise_id]
+
     update_schema('anaerobic_exercises')
+
+    return '', HTTPStatus.NO_CONTENT
+
+
+@bp.post('/exercises/aerobic/exercises')
+def add_aerobic_exercise():
+    _exercise_schema['aerobic_exercises'].append(request.json)
+    update_schema('anaerobic_exercises')
+
+    return '', HTTPStatus.NO_CONTENT
+
+
+@bp.put('/exercises/aerobic/exercises')
+def update_aerobic_exercise():
+    updated_exercise = request.json
+    for i, exercise in enumerate(_exercise_schema['aerobic_exercises']):
+        if exercise['id'] == updated_exercise['id']:
+            _exercise_schema['aerobic_exercises'][i] = updated_exercise
+
+    update_schema('aerobic_exercises')
+
+    return '', HTTPStatus.NO_CONTENT
+
+
+@bp.delete('/exercises/aerobic/<exercise_id>')
+def delete_aerobic_exercise(exercise_id):
+    _exercise_schema['aerobic_exercises'][:] = \
+        [exercise for exercise in _exercise_schema['aerobic_exercises']
+            if not exercise['id'] == exercise_id]
+
+    update_schema('aerobic_exercises')
+
     return '', HTTPStatus.NO_CONTENT
 
 

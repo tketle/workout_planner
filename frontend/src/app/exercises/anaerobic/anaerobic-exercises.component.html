@@ -13,7 +13,7 @@
           <table mat-table [dataSource]="getAnaerobicExercisesInRegion(muscleRegion.id)" class="exercise-table mat-elevation-z2">
             <!-- Column definitions -->
             <ng-container matColumnDef="muscleRegionName">
-              <th mat-header-cell *matHeaderCellDef [attr.colspan]="displayedAnaerobicColumns.length">{{muscleRegion.name}}</th>
+              <th mat-header-cell *matHeaderCellDef [attr.colspan]="displayedColumns.length">{{muscleRegion.name}}</th>
             </ng-container>
 
             <ng-container matColumnDef="{{col.key}}" *ngFor="let col of columnSchema">
@@ -42,12 +42,12 @@
                   <div *ngSwitchCase="'map'">
                     <mat-form-field appearance="fill">
                       <mat-label>{{col.label}}</mat-label>
-                      <mat-select ngDefaultControl [(ngModel)]="exercise.targeted_muscles" multiple>
-                        <mat-option>-- None --</mat-option>
-                        <mat-optgroup *ngFor="let item of col.source | keyvalue" [label]="item.key">
-                          <mat-option *ngFor="let muscle of item.value" [value]="muscle">{{muscle}}</mat-option>
-                        </mat-optgroup>
-                      </mat-select>
+                      <mat-select ngDefaultControl [(ngModel)]="exercise[col.key]" multiple>
+                          <mat-option>-- None --</mat-option>
+                          <mat-optgroup *ngFor="let item of col.source | keyvalue" [label]="item.key">
+                            <mat-option *ngFor="let muscle of item.value" [value]="muscle">{{muscle}}</mat-option>
+                          </mat-optgroup>
+                        </mat-select>
                     </mat-form-field>
                   </div>
                   <div *ngSwitchDefault>
@@ -62,7 +62,7 @@
 
             <!-- Add -->
             <ng-container matColumnDef="add">
-              <td mat-cell *matFooterCellDef [attr.colspan]="displayedAnaerobicColumns.length">
+              <td mat-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
                 <button mat-stroked-button style="width: 100%;" (click)="addRow(muscleRegion);">
                   <span style="padding: 50%;" class="material-symbols-outlined add-btn">add</span>
                 </button>
@@ -75,7 +75,7 @@
             <tr mat-header-row *matHeaderRowDef="['muscleRegionName']"></tr>
 
             <!-- Data -->
-            <tr mat-row *matRowDef="let row; columns: displayedAnaerobicColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
             <!-- No data -->
             <tr class="mat-mdc-row mdc-data-table__row" *matNoDataRow>

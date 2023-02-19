@@ -8,12 +8,12 @@ export class MockExercisesUtil {
     {
       id: "ae_1",
       name: "Mock Aerobic Exercise 1",
-      equipment: ["Mock equipment"]
+      equipment: "Mock equipment"
     },
     {
       id: "ae_2",
       name: "Mock Aerobic Exercise 2",
-      equipment: ["Mock equipment"]
+      equipment: "Mock equipment"
     },
   ];
 

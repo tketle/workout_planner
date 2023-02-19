@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import { ExercisesService } from "../exercises.service";
+import {ExercisesService} from "../../exercises.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 export interface Data {
@@ -8,15 +8,15 @@ export interface Data {
 }
 
 @Component({
-  selector: 'app-delete-dialog',
-  templateUrl: './delete-dialog.component.html',
-  styleUrls: ['../../../styles/delete-dialog.component.css']
+  selector: 'app-delete-aerobic-dialog',
+  templateUrl: './delete-aerobic-dialog.component.html',
+  styleUrls: ['../../../../styles/delete-aerobic-dialog.component.css']
 })
-export class DeleteDialogComponent {
+export class DeleteAerobicDialogComponent {
 
   constructor(
     private exercisesService: ExercisesService,
-    public dialogRef: MatDialogRef<DeleteDialogComponent>,
+    public dialogRef: MatDialogRef<DeleteAerobicDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Data
   ) {}
 
@@ -25,9 +25,9 @@ export class DeleteDialogComponent {
   }
 
   onDeleteClick(): void {
-    this.exercisesService.deleteAnaerobicExercise(this.data.id)
+    this.exercisesService.deleteAerobicExercise(this.data.id)
       .subscribe(response => {
         this.dialogRef.close(response);
-      });
+      })
   }
 }
