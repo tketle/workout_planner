@@ -3,7 +3,7 @@
 
 @include mat.core();
 
-$primary: mat.define-palette(mat.$indigo-palette, 200, 100, 700);
+$primary: mat.define-palette(mat.$indigo-palette, 300, 200, 700);
 $accent: mat.define-palette(mat.$blue-grey-palette, 300, 100, A400);
 
 $workout-planner-theme: mat.define-light-theme((

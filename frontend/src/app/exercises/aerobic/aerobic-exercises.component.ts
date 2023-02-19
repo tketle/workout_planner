@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AerobicExercise} from "../../model/AerobicExercise";
+import {AerobicExercise} from "../model/AerobicExercise";
 import {ExercisesService} from "../exercises.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteAerobicDialogComponent} from "./delete-aerobic-dialog/delete-aerobic-dialog.component";
@@ -48,7 +48,7 @@ enum State {
 @Component({
   selector: 'app-aerobic-exercises',
   templateUrl: './aerobic-exercises.component.html',
-  styleUrls: ['../../../styles/aerobic-exercises.component.css']
+  styleUrls: ['../../../styles/exercises.component.scss']
 })
 export class AerobicExercisesComponent implements OnInit {
   state: State = State.VIEWING;

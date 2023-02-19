@@ -3,12 +3,12 @@ import { HttpClient } from "@angular/common/http";
 import { MessageService } from "../messages/message.service";
 import {catchError, map, Observable, of, tap} from "rxjs";
 import {API_HOST_NAME} from "../env";
-import {MockExercisesUtil} from "../model/mock-exercises-util";
-import {AerobicExercise} from "../model/AerobicExercise";
-import {AnaerobicExercise} from "../model/AnaerobicExercise";
-import {MuscleGroup} from "../model/MuscleGroup";
-import {MuscleRegion} from "../model/MuscleRegion";
-import {AnaerobicData} from "../model/AnaerobicData";
+import {MockExercisesUtil} from "./model/mock-exercises-util";
+import {AerobicExercise} from "./model/AerobicExercise";
+import {AnaerobicExercise} from "./model/AnaerobicExercise";
+import {MuscleGroup} from "./model/MuscleGroup";
+import {MuscleRegion} from "./model/MuscleRegion";
+import {AnaerobicData} from "./model/AnaerobicData";
 
 @Injectable({
   providedIn: 'root'

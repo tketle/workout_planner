@@ -2,6 +2,19 @@
 
 $striped-row-color: #F4F4F4;
 
+app-exercises {
+  display: block;
+  height: 100%;
+}
+
+.mat-mdc-tab-body-content {
+  overflow: unset;
+}
+
+mat-tab-group, .mat-mdc-tab-body-wrapper {
+  height: 100%;
+}
+
 .material-symbols-outlined {
   font-variation-settings:
   'FILL' 0,
@@ -32,15 +45,21 @@ $striped-row-color: #F4F4F4;
   border-bottom: 1px solid #CACACA;
 }
 
+.exercise-table tr:not(.mat-mdc-header-row, .mat-mdc-footer-row):nth-child(odd) {
+  background-color: $striped-row-color;
+}
+
 // Suppress material row highlighting behavior
 .exercise-table .mdc-data-table__row:hover {
   background-color: unset;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: inherit;
 }
 
 .mat-mdc-form-field-subscript-wrapper {
   display: none;
 }
 
-.exercise-table tr:not(.mat-mdc-header-row, .mat-mdc-footer-row):nth-child(odd) {
-  background-color: $striped-row-color;
-}
+

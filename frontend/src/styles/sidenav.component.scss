@@ -1,0 +1,24 @@
+@use 'variables' as vars;
+app-sidenav {
+  margin-top: 64px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+mat-sidenav {
+  width: 10vw;
+}
+
+.sidenav-header {
+  display: flex;
+  align-items: center;
+  padding-left: 1%;
+  background-color: vars.$accent-lighter-color;
+  height: 48px;
+}
+
+.sidenav-container {
+  height: 100%;
+}

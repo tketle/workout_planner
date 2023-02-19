@@ -17,11 +17,14 @@ import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {MatSelectModule} from "@angular/material/select";
 import { ExercisesComponent } from './exercises/exercises.component';
-import { AerobicExercisesComponent } from './exercises/aerobic-exercises/aerobic-exercises.component';
+import { AerobicExercisesComponent } from './exercises/aerobic/aerobic-exercises.component';
 import {MatTabsModule} from "@angular/material/tabs";
-import {RouterLink} from "@angular/router";
-import { AppRoutingModule } from './app-routing.module';
-import { DeleteAerobicDialogComponent } from './exercises/aerobic-exercises/delete-aerobic-dialog/delete-aerobic-dialog.component';
+import { DeleteAerobicDialogComponent } from './exercises/aerobic/delete-aerobic-dialog/delete-aerobic-dialog.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatIconModule} from "@angular/material/icon";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import { SidenavComponent } from './sidenav/sidenav.component';
 
 @NgModule({
   declarations: [
@@ -31,25 +34,28 @@ import { DeleteAerobicDialogComponent } from './exercises/aerobic-exercises/dele
     DeleteAnaerobicDialogComponent,
     ExercisesComponent,
     AerobicExercisesComponent,
-    DeleteAerobicDialogComponent
+    DeleteAerobicDialogComponent,
+    NavbarComponent,
+    SidenavComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    MatExpansionModule,
-    MatTableModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatDividerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatSelectModule,
-    MatTabsModule,
-    RouterLink,
-    AppRoutingModule
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        MatExpansionModule,
+        MatTableModule,
+        MatButtonModule,
+        MatDialogModule,
+        MatDividerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        MatSelectModule,
+        MatTabsModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatSidenavModule,
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

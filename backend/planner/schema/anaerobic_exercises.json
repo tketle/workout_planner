@@ -19,13 +19,13 @@
         "muscle_region": "a27eb84b-cc11-418d-8f67-7e36cca172a1"
     },
     {
+        "equipment": "fghj",
         "id": "3fb9a859-ee0c-4391-8fe4-162ee1822614",
+        "muscle_region": "a27eb84b-cc11-418d-8f67-7e36cca172a1",
         "name": "Chest placeholder 3",
         "targeted_muscles": [
             "chest muscle 2"
-        ],
-        "equipment": "placeholder",
-        "muscle_region": "a27eb84b-cc11-418d-8f67-7e36cca172a1"
+        ]
     },
     {
         "id": "8491332f-370a-4f6d-83ec-80779ab149b1",

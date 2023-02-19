@@ -93,7 +93,7 @@ def delete_anaerobic_exercise(exercise_id):
 @bp.post('/exercises/aerobic/exercises')
 def add_aerobic_exercise():
     _exercise_schema['aerobic_exercises'].append(request.json)
-    update_schema('anaerobic_exercises')
+    update_schema('aerobic_exercises')
 
     return '', HTTPStatus.NO_CONTENT
 
