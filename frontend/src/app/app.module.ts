@@ -28,7 +28,6 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { MainContentComponent } from './main-content/main-content.component';
 import {MatListModule} from "@angular/material/list";
-import {ContentDirective} from "./main-content/content-directive";
 import { ScheduleComponent } from './main-content/schedule/schedule.component';
 
 @NgModule({
@@ -43,7 +42,6 @@ import { ScheduleComponent } from './main-content/schedule/schedule.component';
     NavbarComponent,
     SidenavComponent,
     MainContentComponent,
-    ContentDirective,
     ScheduleComponent
   ],
     imports: [

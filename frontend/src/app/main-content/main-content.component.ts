@@ -1,6 +1,5 @@
-import {Component, Type, ViewChild} from '@angular/core';
+import {Component, Type, ViewChild, ViewContainerRef} from '@angular/core';
 import {ContentComponent} from "./content-component";
-import {ContentDirective} from "./content-directive";
 
 @Component({
   selector: 'app-main-content',
@@ -8,10 +7,10 @@ import {ContentDirective} from "./content-directive";
   styleUrls: ['../../styles/main-content.component.scss']
 })
 export class MainContentComponent {
-  @ViewChild(ContentDirective, {static: true}) content!: ContentDirective;
+  @ViewChild('content', {read: ViewContainerRef}) content!: ViewContainerRef;
 
   renderView(content: Type<ContentComponent>): void {
-    this.content.viewContainerRef.clear();
-    this.content.viewContainerRef.createComponent<ContentComponent>(content);
+    this.content.clear();
+    this.content.createComponent<ContentComponent>(content);
   }
 }
