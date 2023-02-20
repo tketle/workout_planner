@@ -3,7 +3,9 @@
 @use 'app.component';
 @use 'navbar.component';
 @use 'sidenav.component';
+@use 'main-content.component';
 @use 'exercises.component';
+@use 'schedule.component';
 
 html, body {
   height: 100vh;

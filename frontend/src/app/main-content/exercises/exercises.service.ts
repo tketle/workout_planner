@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { MessageService } from "../messages/message.service";
+import { MessageService } from "../../messages/message.service";
 import {catchError, map, Observable, of, tap} from "rxjs";
-import {API_HOST_NAME} from "../env";
+import {API_HOST_NAME} from "../../env";
 import {MockExercisesUtil} from "./model/mock-exercises-util";
 import {AerobicExercise} from "./model/AerobicExercise";
 import {AnaerobicExercise} from "./model/AnaerobicExercise";

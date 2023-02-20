@@ -48,7 +48,7 @@ enum State {
 @Component({
   selector: 'app-aerobic-exercises',
   templateUrl: './aerobic-exercises.component.html',
-  styleUrls: ['../../../styles/exercises.component.scss']
+  styleUrls: ['../../../../styles/exercises.component.scss']
 })
 export class AerobicExercisesComponent implements OnInit {
   state: State = State.VIEWING;

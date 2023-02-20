@@ -1,12 +1,18 @@
 <header class="sidenav-header mat-toolbar">
-  <button mat-icon-button>
+  <button mat-icon-button (click)="sidenav.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span style="margin-left: 1%;">adsfasdf</span>
+  <span style="margin-left: 1%;">{{selectedNavItem.name}}</span>
 </header>
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav mode="side" opened>Sidenav contentjfhgshdgasdsgfhgdnfsd</mat-sidenav>
+  <mat-sidenav #sidenav mode="side">
+    <mat-action-list>
+      <mat-list-item *ngFor="let navItem of navItems">
+        <button mat-list-item (click)="navItemSelected(navItem)">{{navItem.name}}</button>
+      </mat-list-item>
+    </mat-action-list>
+  </mat-sidenav>
   <mat-sidenav-content>
-    <app-exercises></app-exercises>
+    <app-main-content></app-main-content>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -10,7 +10,7 @@ export interface Data {
 @Component({
   selector: 'app-delete-anaerobic-dialog',
   templateUrl: './delete-anaerobic-dialog.component.html',
-  styleUrls: ['../../../../styles/delete-anaerobic-dialog.component.css']
+  styleUrls: ['../../../../../styles/delete-anaerobic-dialog.component.css']
 })
 export class DeleteAnaerobicDialogComponent {
 
