@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
-  messages: string[] = [];
-  constructor() { }
+  hPos: MatSnackBarHorizontalPosition = 'start';
+  vPos: MatSnackBarVerticalPosition = 'bottom';
 
-  add(message: string) {
-    this.messages.push(message);
-  }
+  constructor(private snackBar: MatSnackBar) { }
 
-  clear() {
-    this.messages = [];
+  success(message: string) {
+    this.snackBar.open(message, '', {
+      horizontalPosition: this.hPos,
+      verticalPosition: this.vPos,
+      duration: 3000
+    })
   }
 }

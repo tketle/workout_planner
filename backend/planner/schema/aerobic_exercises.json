@@ -8,5 +8,10 @@
         "id": "4a5aab0c-0133-486b-9189-fd5498660856",
         "name": "asdfhg",
         "equipment": "sd"
+    },
+    {
+        "id": "15b4e286-e75c-4e84-a8dc-d6f677ba3e73",
+        "name": "test",
+        "equipment": "test"
     }
 ]

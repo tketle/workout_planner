@@ -1,126 +1,216 @@
 from flask import (
-    Blueprint, json, request
+    Blueprint, request, jsonify
 )
 from http import HTTPStatus
 
+from sqlalchemy import select, update, delete
+from sqlalchemy.exc import IntegrityError, DBAPIError
+
+from planner.schema.models import (
+    AerobicExercise, AnaerobicExercise, MuscleRegion, DataClassUnpack, Workout
+)
+from planner.db import db
 
 bp = Blueprint('exercises', __name__, url_prefix=None)
 
-_exercise_schema = {
-    'muscle_groups': None, 'muscle_regions': None,
-    'aerobic_exercises': None, 'anaerobic_exercises': None
-}
+
+@bp.get('/workouts')
+def workouts():
+    return db.session.scalars(select(Workout)).all()
 
 
-def init():
-    global _exercise_schema
-    for key in _exercise_schema:
-        with open('planner/schema/' + key + '.json') as file:
-            _exercise_schema[key] = json.load(file)
+@bp.get('/workouts/<workout_id>')
+def workout(workout_id):
+    return db.session.scalars(select(Workout).where(Workout.id == workout_id)).first() \
+           or f'Workout with ID {workout_id} not found', HTTPStatus.BAD_REQUEST
 
 
-@bp.get('/exercises/aerobic/exercises')
-def aerobic_exercises():
-    return _exercise_schema['aerobic_exercises']
-
-
-@bp.get("/exercises/anaerobic")
-def anaerobic_data():
-    return {'anaerobic_exercises': _exercise_schema['anaerobic_exercises'],
-            'muscle_groups': _exercise_schema['muscle_groups'],
-            'muscle_regions': _exercise_schema['muscle_regions']}
-
-
-@bp.get('/exercises/anaerobic/exercises')
-def anaerobic_exercises():
-    return _exercise_schema['anaerobic_exercises']
-
-
-@bp.get('/exercises/anaerobic/musclegroups')
-def muscle_groups():
-    return _exercise_schema['muscle_groups']
-
-
-@bp.get('/exercises/anaerobic/muscleregions')
+@bp.get('/muscleregions')
 def muscle_regions():
-    return _exercise_schema['muscle_regions']
+    return db.session.scalars(select(MuscleRegion)).all()
 
 
-@bp.post('/exercises/anaerobic/exercises')
-def add_anaerobic_exercise():
-    exercise = request.json
-    first_matching = \
-        next((i for i, e in enumerate(_exercise_schema['anaerobic_exercises'])
-              if e['muscle_region'] == exercise['muscle_region']), -1)
-
-    if first_matching == -1:
-        return 'Could not find muscle region with matching ID: ' + exercise['muscle_region'], \
-            HTTPStatus.INTERNAL_SERVER_ERROR
-
-    insert_pos = \
-        next((i + first_matching for i, e in enumerate(_exercise_schema['anaerobic_exercises'][first_matching:])
-              if e['muscle_region'] != exercise['muscle_region']), len(_exercise_schema['anaerobic_exercises']))
-
-    _exercise_schema['anaerobic_exercises'].insert(insert_pos, exercise)
-    update_schema('anaerobic_exercises')
-
-    return '', HTTPStatus.NO_CONTENT
+@bp.get('/muscleregions/<muscle_region_id>')
+def muscle_region(muscle_region_id):
+    return db.session.scalars(select(MuscleRegion).where(MuscleRegion.id == muscle_region_id)).first() \
+           or f'Muscle Region with ID {muscle_region_id} not found', HTTPStatus.BAD_REQUEST
 
 
-@bp.put('/exercises/anaerobic/exercises')
-def update_anaerobic_exercise():
-    updated_exercise = request.json
-    for i, exercise in enumerate(_exercise_schema['anaerobic_exercises']):
-        if exercise['id'] == updated_exercise['id']:
-            _exercise_schema['anaerobic_exercises'][i] = updated_exercise
-
-    update_schema('anaerobic_exercises')
-
-    return '', HTTPStatus.NO_CONTENT
+@bp.get('/exercises/anaerobic')
+def anaerobic_exercises():
+    return db.session.scalars(select(AnaerobicExercise)).all()
 
 
-@bp.delete('/exercises/anaerobic/<exercise_id>')
-def delete_anaerobic_exercise(exercise_id):
-    _exercise_schema['anaerobic_exercises'][:] = \
-        [exercise for exercise in _exercise_schema['anaerobic_exercises']
-            if not exercise['id'] == exercise_id]
-
-    update_schema('anaerobic_exercises')
-
-    return '', HTTPStatus.NO_CONTENT
+@bp.get('/exercises/anaerobic/<exercise_id>')
+def anaerobic_exercise_by_id(exercise_id):
+    ret = db.session.scalars(select(AnaerobicExercise).where(AnaerobicExercise.id == exercise_id)).first()
+    return jsonify(ret) if ret is not None \
+        else f'Anaerobic Exercise with ID {exercise_id} not found', HTTPStatus.BAD_REQUEST
 
 
-@bp.post('/exercises/aerobic/exercises')
-def add_aerobic_exercise():
-    _exercise_schema['aerobic_exercises'].append(request.json)
-    update_schema('aerobic_exercises')
-
-    return '', HTTPStatus.NO_CONTENT
+@bp.get('/exercises/anaerobic/name/<exercise_name>')
+def anaerobic_exercise_by_name(exercise_name):
+    return db.session.scalars(select(AnaerobicExercise).where(AnaerobicExercise.name == exercise_name)).all() \
+        or (f'No Anaerobic Exercises found with name {exercise_name}', HTTPStatus.BAD_REQUEST)
 
 
-@bp.put('/exercises/aerobic/exercises')
-def update_aerobic_exercise():
-    updated_exercise = request.json
-    for i, exercise in enumerate(_exercise_schema['aerobic_exercises']):
-        if exercise['id'] == updated_exercise['id']:
-            _exercise_schema['aerobic_exercises'][i] = updated_exercise
-
-    update_schema('aerobic_exercises')
-
-    return '', HTTPStatus.NO_CONTENT
+@bp.get("/exercises/anaerobic/data")
+def anaerobic_data():
+    return {'muscle_regions': muscle_regions(),
+            'anaerobic_exercises': anaerobic_exercises()}
 
 
-@bp.delete('/exercises/aerobic/<exercise_id>')
-def delete_aerobic_exercise(exercise_id):
-    _exercise_schema['aerobic_exercises'][:] = \
-        [exercise for exercise in _exercise_schema['aerobic_exercises']
-            if not exercise['id'] == exercise_id]
+@bp.post('/exercises/anaerobic')
+def add_anaerobic_version():
+    try:
+        db.session.add(DataClassUnpack.instantiate(AnaerobicExercise, request.json))
+        db.session.commit()
+        return '', HTTPStatus.NO_CONTENT
+    except DBAPIError as e:
+        return str(e.orig), HTTPStatus.BAD_REQUEST if isinstance(e, IntegrityError) \
+            else HTTPStatus.INTERNAL_SERVER_ERROR
 
-    update_schema('aerobic_exercises')
 
-    return '', HTTPStatus.NO_CONTENT
+@bp.put('/exercises/anaerobic/active')
+def set_active_anaerobic_version():
+    try:
+        current_active = db.session.scalar(select(AnaerobicExercise.id)
+                                           .where(AnaerobicExercise.name == request.args.get('name'))
+                                           .where(AnaerobicExercise.active))
+
+        if current_active is not None:
+            db.session.execute(update(AnaerobicExercise)
+                               .where(AnaerobicExercise.id == current_active)
+                               .values(active=False))
+
+        db.session.execute(update(AnaerobicExercise)
+                           .where(AnaerobicExercise.name == request.args.get('name'))
+                           .where(AnaerobicExercise.version == int(request.args.get('version')))
+                           .values(active=True))
+
+        db.session.commit()
+
+        return '', HTTPStatus.NO_CONTENT
+    except DBAPIError as e:
+        return str(e.orig), HTTPStatus.BAD_REQUEST if isinstance(e, IntegrityError) \
+            else HTTPStatus.INTERNAL_SERVER_ERROR
 
 
-def update_schema(schema):
-    with open('planner/schema/' + schema + '.json', 'w') as f:
-        json.dump(_exercise_schema[schema], f, sort_keys=False, indent=4)
+@bp.delete('/exercises/anaerobic/<exercise_name>')
+def delete_anaerobic_exercise(exercise_name):
+    try:
+        exercises = db.session.scalars(select(AnaerobicExercise).where(AnaerobicExercise.name == exercise_name))
+
+        used_versions = []
+        for exercise in exercises:
+            if bool(db.session.query(Workout.anaerobic_exercise).filter_by(anaerobic_exercise=exercise.id).first()):
+                used_versions.append(exercise.version)
+
+        if used_versions:
+            return f'Exercise \'{exercise_name}\' versions {sorted(used_versions)} have been used in at least one ' \
+                   f'Workout and cannot be deleted. If you want it removed from the exercise pool, ' \
+                   f'mark all of its versions as Inactive.', \
+                HTTPStatus.BAD_REQUEST
+
+        db.session.execute(delete(AerobicExercise).where(AnaerobicExercise.name == exercise_name))
+        db.session.commit()
+
+        return '', HTTPStatus.NO_CONTENT
+    except DBAPIError as e:
+        return str(e.orig), HTTPStatus.BAD_REQUEST if isinstance(e, IntegrityError) \
+            else HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+@bp.get('/exercises/aerobic')
+def aerobic_exercises():
+    return db.session.scalars(select(AerobicExercise)).all()
+
+
+@bp.get('/exercises/aerobic/<exercise_id>')
+def aerobic_exercise_by_id(exercise_id):
+    ret = db.session.scalars(select(AerobicExercise).where(AerobicExercise.id == exercise_id)).first()
+    return jsonify(ret) if ret is not None \
+        else f'Aerobic Exercise with ID {exercise_id} not found', HTTPStatus.BAD_REQUEST
+
+
+@bp.get('/exercises/aerobic/name/<exercise_name>')
+def aerobic_exercise_by_name(exercise_name):
+    return db.session.scalars(select(AerobicExercise).where(AerobicExercise.name == exercise_name)).all() \
+        or (f'No Aerobic Exercises found with name {exercise_name}', HTTPStatus.BAD_REQUEST)
+
+
+@bp.post('/exercises/aerobic')
+def add_aerobic_version():
+    try:
+        db.session.add(DataClassUnpack.instantiate(AerobicExercise, request.json))
+        db.session.commit()
+        return '', HTTPStatus.NO_CONTENT
+    except DBAPIError as e:
+        return str(e.orig), HTTPStatus.BAD_REQUEST if isinstance(e, IntegrityError) \
+            else HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+@bp.put('/exercises/aerobic/active')
+def set_active_aerobic_version():
+    try:
+        current_active = db.session.scalar(select(AerobicExercise.id)
+                                           .where(AerobicExercise.name == request.args.get('name'))
+                                           .where(AerobicExercise.active))
+
+        if current_active is not None:
+            db.session.execute(update(AerobicExercise)
+                               .where(AerobicExercise.id == current_active)
+                               .values(active=False))
+
+        db.session.execute(update(AerobicExercise)
+                           .where(AerobicExercise.name == request.args.get('name'))
+                           .where(AerobicExercise.version == int(request.args.get('version')))
+                           .values(active=True))
+
+        db.session.commit()
+
+        return '', HTTPStatus.NO_CONTENT
+    except DBAPIError as e:
+        return str(e.orig), HTTPStatus.BAD_REQUEST if isinstance(e, IntegrityError) \
+            else HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+@bp.put('/exercises/aerobic/inactive')
+def set_inactive_aerobic_version():
+    try:
+        db.session.execute(update(AerobicExercise)
+                           .where(AerobicExercise.name == request.args.get('name'))
+                           .where(AerobicExercise.version == int(request.args.get('version')))
+                           .values(active=False))
+
+        db.session.commit()
+
+        return '', HTTPStatus.NO_CONTENT
+    except DBAPIError as e:
+        return str(e.orig), HTTPStatus.BAD_REQUEST if isinstance(e, IntegrityError) \
+            else HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+@bp.delete('/exercises/aerobic/<exercise_name>')
+def delete_aerobic_exercise(exercise_name):
+    try:
+        exercises = db.session.scalars(select(AerobicExercise).where(AerobicExercise.name == exercise_name))
+
+        used_versions = []
+        for exercise in exercises:
+            if bool(db.session.query(Workout.aerobic_exercise).filter_by(aerobic_exercise=exercise.id).first()):
+                used_versions.append(exercise.version)
+
+        if used_versions:
+            return f'Exercise \'{exercise_name}\' versions {sorted(used_versions)} have been used in at least one ' \
+                   f'Workout and cannot be deleted. If you want it removed from the exercise pool, ' \
+                   f'mark all of its versions as Inactive.', \
+                HTTPStatus.BAD_REQUEST
+
+        db.session.execute(delete(AerobicExercise).where(AerobicExercise.name == exercise_name))
+        db.session.commit()
+
+        return '', HTTPStatus.NO_CONTENT
+    except DBAPIError as e:
+        return str(e.orig), HTTPStatus.BAD_REQUEST if isinstance(e, IntegrityError) \
+            else HTTPStatus.INTERNAL_SERVER_ERROR

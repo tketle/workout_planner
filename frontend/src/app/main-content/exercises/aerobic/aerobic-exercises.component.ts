@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AerobicExercise} from "../model/AerobicExercise";
 import {ExercisesService} from "../exercises.service";
 import {MatDialog} from "@angular/material/dialog";
@@ -50,7 +50,7 @@ enum State {
   templateUrl: './aerobic-exercises.component.html',
   styleUrls: ['../../../../styles/exercises.component.scss']
 })
-export class AerobicExercisesComponent implements OnInit {
+export class AerobicExercisesComponent implements OnInit, OnDestroy {
   state: State = State.VIEWING;
 
   aerobic_exercises!: AerobicExercise[];
@@ -92,11 +92,19 @@ export class AerobicExercisesComponent implements OnInit {
     this.getAerobicExercises();
   }
 
+  ngOnDestroy(): void {
+    this.updateCache();
+  }
+
   getAerobicExercises(): void {
     this.exercisesService.getAerobicExercises()
       .subscribe((exercises: AerobicExercise[]) => {
         this.aerobic_exercises = exercises;
       })
+  }
+
+  updateCache(): void {
+    this.exercisesService.updateAerobicExercisesCache(this.aerobic_exercises);
   }
 
   isEditingOrCreating(exerciseId: string): boolean {

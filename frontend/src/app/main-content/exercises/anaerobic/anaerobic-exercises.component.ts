@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { ExercisesService } from "../exercises.service";
 import { MessageService } from "../../../messages/message.service";
 import {MatAccordion, MatExpansionPanel} from "@angular/material/expansion";
@@ -59,7 +59,7 @@ enum State {
   templateUrl: './anaerobic-exercises.component.html',
   styleUrls: ['../../../../styles/exercises.component.scss']
 })
-export class AnaerobicExercisesComponent implements OnInit {
+export class AnaerobicExercisesComponent implements OnInit, OnDestroy {
   state: State = State.VIEWING;
 
   anaerobic_exercises!: AnaerobicExercise[];
@@ -77,12 +77,15 @@ export class AnaerobicExercisesComponent implements OnInit {
 
   constructor(
     private exercisesService: ExercisesService,
-    //private messageService: MessageService,
     public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.getAnaerobicData();
+  }
+
+  ngOnDestroy(): void {
+    this.updateCache();
   }
 
   openDialog(exerciseId: string, exerciseName: string): void {
@@ -181,6 +184,14 @@ export class AnaerobicExercisesComponent implements OnInit {
         this.muscle_regions = anaerobicData.muscle_regions;
         this.populateMuscles();
       });
+  }
+
+  updateCache(): void {
+    this.exercisesService.updateAnaerobicDataCache({
+      anaerobic_exercises: this.anaerobic_exercises,
+      muscle_groups: this.muscle_groups,
+      muscle_regions: this.muscle_regions
+    });
   }
 
   getMuscleRegionsInGroup(groupId: string): MuscleRegion[] {

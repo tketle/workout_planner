@@ -1,40 +1,46 @@
 [
     {
+        "equipment": "placeholder",
         "id": "43abb6bc-3d12-46a0-b198-61645866b852",
-        "name": "Chest placeholder 1",
+        "muscle_region": "a27eb84b-cc11-418d-8f67-7e36cca172a1",
+        "name": "Chest sdaasdvg 1",
         "targeted_muscles": [
             "chest muscle 1",
             "chest muscle 2"
-        ],
-        "equipment": "placeholder",
-        "muscle_region": "a27eb84b-cc11-418d-8f67-7e36cca172a1"
+        ]
     },
     {
+        "equipment": "placeholder",
         "id": "2352ad1a-3f1c-45ff-974f-fc32759c83ff",
+        "muscle_region": "a27eb84b-cc11-418d-8f67-7e36cca172a1",
         "name": "Chest placeholder 2",
         "targeted_muscles": [
+            "biceps",
             "chest muscle 1"
-        ],
-        "equipment": "placeholder",
-        "muscle_region": "a27eb84b-cc11-418d-8f67-7e36cca172a1"
+        ]
     },
     {
+        "equipment": "placeholdersdfg",
         "id": "8491332f-370a-4f6d-83ec-80779ab149b1",
+        "muscle_region": "a27eb84b-cc11-418d-8f67-7e36cca172a1",
         "name": "Chest placeholder 4",
         "targeted_muscles": [
             "chest muscle 1"
-        ],
-        "equipment": "placeholder",
-        "muscle_region": "a27eb84b-cc11-418d-8f67-7e36cca172a1"
+        ]
     },
     {
+        "equipment": "dumbbells",
         "id": "6905d1bb-3d4c-490c-a717-659864c09262",
+        "muscle_region": "e8ac01c2-4cd7-42af-b610-e5c7164c36af",
         "name": "Shoulders placeholder 1",
         "targeted_muscles": [
+            "lower abs",
+            "lower legs muscle 1",
+            "lower legs muscle 2",
+            "mid abs",
+            "obliques",
             "shoulder muscle 1"
-        ],
-        "equipment": "dumbbells",
-        "muscle_region": "e8ac01c2-4cd7-42af-b610-e5c7164c36af"
+        ]
     },
     {
         "id": "58ae742f-f0e5-4f76-9020-baa018704936",
@@ -151,6 +157,16 @@
             "lower abs"
         ],
         "equipment": "cable",
+        "muscle_region": "729b19d9-c4b2-455b-9615-451d887b1657"
+    },
+    {
+        "id": "8ea977da-dc9a-485c-9be4-b1c1ee6a37de",
+        "name": "hfgjgj",
+        "targeted_muscles": [
+            "chest muscle 1",
+            "lower abs"
+        ],
+        "equipment": "fghk",
         "muscle_region": "729b19d9-c4b2-455b-9615-451d887b1657"
     },
     {

@@ -5,7 +5,6 @@ import { HttpClientModule } from "@angular/common/http";
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AnaerobicExercisesComponent } from './main-content/exercises/anaerobic/anaerobic-exercises.component';
-import { MessagesComponent } from './messages/messages.component';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTableModule} from "@angular/material/table";
 import {MatButtonModule} from "@angular/material/button";
@@ -29,12 +28,13 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import { MainContentComponent } from './main-content/main-content.component';
 import {MatListModule} from "@angular/material/list";
 import { ScheduleComponent } from './main-content/schedule/schedule.component';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
     AppComponent,
     AnaerobicExercisesComponent,
-    MessagesComponent,
     DeleteAnaerobicDialogComponent,
     ExercisesComponent,
     AerobicExercisesComponent,
@@ -44,26 +44,28 @@ import { ScheduleComponent } from './main-content/schedule/schedule.component';
     MainContentComponent,
     ScheduleComponent
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        HttpClientModule,
-        MatExpansionModule,
-        MatTableModule,
-        MatButtonModule,
-        MatDialogModule,
-        MatDividerModule,
-        MatFormFieldModule,
-        MatInputModule,
-        FormsModule,
-        MatSelectModule,
-        MatTabsModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatSidenavModule,
-        MatCheckboxModule,
-        MatListModule,
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    MatExpansionModule,
+    MatTableModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatSelectModule,
+    MatTabsModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatCheckboxModule,
+    MatListModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

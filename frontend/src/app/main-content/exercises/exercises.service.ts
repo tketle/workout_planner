@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { MessageService } from "../../messages/message.service";
-import {catchError, map, Observable, of, tap} from "rxjs";
+import {catchError, Observable, of, tap} from "rxjs";
 import {API_HOST_NAME} from "../../env";
 import {MockExercisesUtil} from "./model/mock-exercises-util";
 import {AerobicExercise} from "./model/AerobicExercise";
 import {AnaerobicExercise} from "./model/AnaerobicExercise";
-import {MuscleGroup} from "./model/MuscleGroup";
-import {MuscleRegion} from "./model/MuscleRegion";
 import {AnaerobicData} from "./model/AnaerobicData";
 
 @Injectable({
@@ -15,23 +12,31 @@ import {AnaerobicData} from "./model/AnaerobicData";
 })
 export class ExercisesService {
 
+  anaerobicDataCache!: AnaerobicData;
+  aerobicExercisesCache!: AerobicExercise[];
+
   constructor(
-    private httpClient: HttpClient,
-    private messageService: MessageService
+    private httpClient: HttpClient
   ) { }
 
   getAerobicExercises(): Observable<AerobicExercise[]> {
+    if (this.aerobicExercisesCache !== undefined) {
+      return of(this.aerobicExercisesCache);
+    }
+
     return this.httpClient.get<AerobicExercise[]>(API_HOST_NAME + "/exercises/aerobic/exercises")
       .pipe(
-        tap(_ => this.log("fetched aerobic exercises")),
         catchError(this.handleError<AerobicExercise[]>('getAerobicExercises', MockExercisesUtil.MOCK_AEROBIC_EXERCISES))
       );
   }
 
   getAnaerobicData(): Observable<AnaerobicData> {
+    if (this.anaerobicDataCache !== undefined) {
+      return of(this.anaerobicDataCache);
+    }
+
     return this.httpClient.get<AnaerobicData>(API_HOST_NAME + "/exercises/anaerobic")
       .pipe(
-        tap(_ => this.log("fetched anaerobic data")),
         catchError(this.handleError<AnaerobicData>('getAnaerobicData',
           {
             'anaerobic_exercises': MockExercisesUtil.MOCK_ANAEROBIC_EXERCISES,
@@ -42,44 +47,41 @@ export class ExercisesService {
       );
   }
 
+  updateAnaerobicDataCache(anaerobicData: AnaerobicData): void {
+    this.anaerobicDataCache = anaerobicData;
+  }
+
+  updateAerobicExercisesCache(aerobicExercises: AerobicExercise[]): void {
+    this.aerobicExercisesCache = aerobicExercises;
+  }
+
   addAnaerobicExercise(exercise: AnaerobicExercise): Observable<any> {
-    return this.httpClient.post<any>(API_HOST_NAME + "/exercises/anaerobic/exercises", exercise)
-      .pipe(tap(_ => this.log("added anaerobic exercise")));
+    return this.httpClient.post<any>(API_HOST_NAME + "/exercises/anaerobic/exercises", exercise);
   }
 
   updateAnaerobicExercise(exercise: AnaerobicExercise): Observable<any> {
-    return this.httpClient.put<any>(API_HOST_NAME + "/exercises/anaerobic/exercises", exercise)
-      .pipe(tap(_ => this.log("updated anaerobic exercise")));
+    return this.httpClient.put<any>(API_HOST_NAME + "/exercises/anaerobic/exercises", exercise);
   }
 
   deleteAnaerobicExercise(exerciseId: string): Observable<any> {
-    return this.httpClient.delete<any>(API_HOST_NAME + '/exercises/anaerobic/' + exerciseId)
-      .pipe(tap(_ => this.log("deleted anaerobic exercise")));
+    return this.httpClient.delete<any>(API_HOST_NAME + '/exercises/anaerobic/' + exerciseId);
   }
 
   addAerobicExercise(exercise: AerobicExercise): Observable<any> {
-    return this.httpClient.post<any>(API_HOST_NAME + "/exercises/aerobic/exercises", exercise)
-      .pipe(tap(_ => this.log("added aerobic exercise")));
+    return this.httpClient.post<any>(API_HOST_NAME + "/exercises/aerobic/exercises", exercise);
   }
 
   updateAerobicExercise(exercise: AerobicExercise): Observable<any> {
-    return this.httpClient.put<any>(API_HOST_NAME + "/exercises/aerobic/exercises", exercise)
-      .pipe(tap(_ => this.log("updated aerobic exercise")));
+    return this.httpClient.put<any>(API_HOST_NAME + "/exercises/aerobic/exercises", exercise);
   }
 
   deleteAerobicExercise(exerciseId: string): Observable<any> {
-    return this.httpClient.delete<AerobicExercise[]>(API_HOST_NAME + '/exercises/aerobic/' + exerciseId)
-      .pipe(tap(_ => this.log("deleted aerobic exercise")));
-  }
-
-  private log(message: string) {
-    this.messageService.add(message);
+    return this.httpClient.delete<AerobicExercise[]>(API_HOST_NAME + '/exercises/aerobic/' + exerciseId);
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.error(error);
-      this.log('${operation} failed: ${error.message}');
+      console.error(operation + ': ' + error);
       return of(result as T);
     }
   }

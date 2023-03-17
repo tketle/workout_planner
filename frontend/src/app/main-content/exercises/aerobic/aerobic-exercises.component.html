@@ -1,3 +1,6 @@
+<div *ngIf="aerobic_exercises === undefined" style="margin-left: 50%; margin-top: 10%;">
+  <mat-spinner></mat-spinner>
+</div>
 <div *ngIf="aerobic_exercises !== undefined" style="width: 75vw; margin-left: auto; margin-right: auto; margin-top: 36px;">
   <table mat-table [dataSource]="aerobic_exercises" class="exercise-table mat-elevation-z2">
     <!-- Column definitions -->
@@ -10,10 +13,14 @@
         <!-- Read display -->
         <div ngSwitch="{{col.type}}" *ngIf="!isEditingOrCreating(exercise.id)">
           <div *ngSwitchCase="'edit_or_done'">
-            <span class="material-symbols-outlined" (click)="startEdit(exercise.id);">edit</span>
+            <span class="material-symbols-outlined" (click)="startEdit(exercise.id);" matTooltip="Edit">
+              edit
+            </span>
           </div>
           <div *ngSwitchCase="'delete_or_cancel'">
-            <span class="material-symbols-outlined" (click)="openDialog(exercise.id, exercise.name)">delete</span>
+            <span class="material-symbols-outlined" (click)="openDialog(exercise.id, exercise.name)" matTooltip="Delete">
+              delete
+            </span>
           </div>
           <div *ngSwitchDefault>
             {{exercise[col.key]}}
@@ -23,10 +30,14 @@
         <!-- Edit display -->
         <div ngSwitch="{{col.type}}" *ngIf="isEditingOrCreating(exercise.id)">
           <div *ngSwitchCase="'edit_or_done'">
-            <span class="material-symbols-outlined" (click)="saveChanges(exercise);">done</span>
+            <span class="material-symbols-outlined" (click)="saveChanges(exercise);" matTooltip="Confirm">
+              done
+            </span>
           </div>
           <div *ngSwitchCase="'delete_or_cancel'">
-            <span class="material-symbols-outlined" (click)="cancelEdit(exercise.id);">close</span>
+            <span class="material-symbols-outlined" (click)="cancelEdit(exercise.id);" matTooltip="Cancel">
+              close
+            </span>
           </div>
           <div *ngSwitchCase="'array'">
             <mat-form-field appearance="fill">

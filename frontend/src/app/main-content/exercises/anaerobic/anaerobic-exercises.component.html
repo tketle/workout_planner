@@ -1,3 +1,6 @@
+<div *ngIf="anaerobic_exercises === undefined" style="margin-left: 50%; margin-top: 10%;">
+  <mat-spinner></mat-spinner>
+</div>
 <div *ngIf="anaerobic_exercises !== undefined" style="width: 75%; margin-left: auto; margin-right: auto;">
   <div>
     <button mat-stroked-button (click)="accordion.openAll()">Expand All</button>
@@ -21,33 +24,40 @@
                 <!-- Read display -->
                 <div ngSwitch="{{col.type}}" *ngIf="!isEditingOrCreating(exercise.id)">
                   <div *ngSwitchCase="'edit_or_done'">
-                    <span class="material-symbols-outlined" (click)="startEdit(exercise.id);">edit</span>
+                    <span class="material-symbols-outlined" (click)="startEdit(exercise.id);" matTooltip="Edit">
+                      edit
+                    </span>
                   </div>
                   <div *ngSwitchCase="'delete_or_cancel'">
-                    <span class="material-symbols-outlined" (click)="openDialog(exercise.id, exercise.name)">delete</span>
+                    <span class="material-symbols-outlined" (click)="openDialog(exercise.id, exercise.name)" matTooltip="Delete">
+                      delete
+                    </span>
                   </div>
                   <div *ngSwitchDefault>
-                    {{exercise[col.key]}}
+                    <span *ngIf="exercise[col.key].constructor.name === 'Array'; else defaultDisplay">
+                      {{exercise[col.key].join(', ')}}
+                    </span>
+                    <ng-template #defaultDisplay>{{exercise[col.key]}}</ng-template>
                   </div>
                 </div>
 
                 <!-- Edit display -->
                 <div ngSwitch="{{col.type}}" *ngIf="isEditingOrCreating(exercise.id)">
                   <div *ngSwitchCase="'edit_or_done'">
-                    <span class="material-symbols-outlined" (click)="saveChanges(exercise);">done</span>
+                    <span class="material-symbols-outlined" (click)="saveChanges(exercise);" matTooltip="Confirm">done</span>
                   </div>
                   <div *ngSwitchCase="'delete_or_cancel'">
-                    <span class="material-symbols-outlined" (click)="cancelEdit(exercise.id);">close</span>
+                    <span class="material-symbols-outlined" (click)="cancelEdit(exercise.id);" matTooltip="Cancel">close</span>
                   </div>
                   <div *ngSwitchCase="'map'">
                     <mat-form-field appearance="fill">
                       <mat-label>{{col.label}}</mat-label>
                       <mat-select ngDefaultControl [(ngModel)]="exercise[col.key]" multiple>
-                          <mat-option>-- None --</mat-option>
-                          <mat-optgroup *ngFor="let item of col.source | keyvalue" [label]="item.key">
-                            <mat-option *ngFor="let muscle of item.value" [value]="muscle">{{muscle}}</mat-option>
-                          </mat-optgroup>
-                        </mat-select>
+                        <mat-option>-- None --</mat-option>
+                        <mat-optgroup *ngFor="let item of col.source | keyvalue" [label]="item.key">
+                          <mat-option *ngFor="let val of item.value" [value]="val">{{val}}</mat-option>
+                        </mat-optgroup>
+                      </mat-select>
                     </mat-form-field>
                   </div>
                   <div *ngSwitchDefault>
